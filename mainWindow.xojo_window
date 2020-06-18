@@ -26,12 +26,12 @@ Begin Window mainWindow
    Title           =   "Multi-game Player"
    Visible         =   True
    Width           =   600
-   Begin PushButton gaddagButton
+   Begin PushButton dagadagButton
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
-      Caption         =   "Make bdag"
+      Caption         =   "Make dagadag"
       Default         =   False
       Enabled         =   True
       Height          =   20
@@ -39,7 +39,7 @@ Begin Window mainWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   497
+      Left            =   460
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -56,7 +56,7 @@ Begin Window mainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   83
+      Width           =   120
    End
 End
 #tag EndWindow
@@ -64,10 +64,10 @@ End
 #tag WindowCode
 #tag EndWindowCode
 
-#tag Events gaddagButton
+#tag Events dagadagButton
 	#tag Event
 		Sub Action()
-		  Gaddagmodule.creategaddag
+		  Dagadag_module.create_dagadag
 		  
 		End Sub
 	#tag EndEvent

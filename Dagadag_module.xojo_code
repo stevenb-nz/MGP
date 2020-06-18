@@ -1,7 +1,7 @@
 #tag Module
-Protected Module Gaddagmodule
+Protected Module Dagadag_module
 	#tag Method, Flags = &h0
-		Sub creategaddag()
+		Sub create_dagadag()
 		  dim f,g as folderitem
 		  dim t as textinputStream
 		  dim u as binaryStream
@@ -13,7 +13,7 @@ Protected Module Gaddagmodule
 		  f=getopenfolderitem("text;text/plain;text/richtext")
 		  if f <> nil then
 		    t = f.openastextFile
-		    g = SpecialFolder.Desktop.child("CSW19 working").child("gaddagfile")
+		    g = SpecialFolder.Desktop.child("CSW19 working").child("dagadagfile")
 		    u = g.createbinaryFile("text/richtext")
 		    for i=1 to 27
 		      u.WriteUInt32 0
@@ -67,9 +67,9 @@ Protected Module Gaddagmodule
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function gaddag_endword(node as uint32) As boolean
-		  gaddag.Position = node*109+108
-		  if gaddag.read(1) = "0" then
+		Function dagadag_endword(node as uint32) As boolean
+		  dagadag.Position = node*109+108
+		  if dagadag.read(1) = "0" then
 		    return false
 		  else
 		    return true
@@ -79,22 +79,22 @@ Protected Module Gaddagmodule
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function gaddag_nextnode(node as uint32, letter as string) As UInt32
-		  gaddag.Position = node*109+(asc(lowercase(letter))-96)*4
-		  return gaddag.ReadUInt32
+		Function dagadag_nextnode(node as uint32, letter as string) As UInt32
+		  dagadag.Position = node*109+(asc(lowercase(letter))-96)*4
+		  return dagadag.ReadUInt32
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub initgaddag()
-		  gaddag = SpecialFolder.Preferences.child("gaddagfile").openasbinaryFile(false)
+		Sub init_dagadag()
+		  dagadag = SpecialFolder.Preferences.child("dagadagfile").openasbinaryFile(false)
 		  
 		End Sub
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		gaddag As BinaryStream
+		dagadag As BinaryStream
 	#tag EndProperty
 
 

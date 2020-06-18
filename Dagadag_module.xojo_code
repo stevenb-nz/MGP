@@ -1,5 +1,5 @@
 #tag Module
-Protected Module Dagadag_module
+Protected Module dagadag_module
 	#tag Method, Flags = &h0
 		Sub create_dagadag()
 		  dim f,g as folderitem
@@ -31,9 +31,8 @@ Protected Module Dagadag_module
 		      if check then
 		        j = len(s)
 		        s = chr(96) + s
-		        for i = 1 to j
-		          s = mid(s,i+1,1) + left(s,i) + right(s,j-i)
-		          ss = if(i=j,left(s,j),s)
+		        for i = 1 to j+1
+		          ss = if(i=j+1,left(s,j),s)
 		          currentnode = 0
 		          while ss <> ""
 		            c = left(ss,1)
@@ -56,6 +55,7 @@ Protected Module Dagadag_module
 		          wend
 		          u.position = currentnode*109+108
 		          u.write "1"
+		          s = mid(s,i+1,1) + left(s,i) + right(s,j-i)
 		        next
 		      end if
 		    wend

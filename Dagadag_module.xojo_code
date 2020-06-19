@@ -1,5 +1,5 @@
 #tag Module
-Protected Module dagadag_module
+Protected Module Dagadag_module
 	#tag Method, Flags = &h0
 		Sub create_dagadag()
 		  dim f,g as folderitem
@@ -90,6 +90,30 @@ Protected Module dagadag_module
 		  dagadag = SpecialFolder.Preferences.child("dagadagfile").openasbinaryFile(false)
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function isWord(word as String) As Boolean
+		  dim i as integer
+		  dim node as UInt32
+		  
+		  i = len(word)
+		  node = dagadag_nextnode(0,chr(96))
+		  
+		  while i > 0
+		    i = i -1
+		    node = dagadag_nextnode(node,mid(word,len(word)-i,1))
+		    if node = 0 then
+		      i = 0
+		    end
+		  wend
+		  if node > 0 then
+		    return dagadag_endword(node)
+		  else
+		    return false
+		  end
+		  
+		End Function
 	#tag EndMethod
 
 

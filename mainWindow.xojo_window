@@ -220,6 +220,42 @@ End
 		      prefix(letters,i,rack.tiles(i).face+word,nextnode)
 		    end
 		  next
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    for i = 0 to UBound(rack.tiles)
+		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		      if nextnode <> 0 then
+		        suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		      end
+		    next
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub suffix(letters as string, index as integer, word as string, node as integer)
+		  dim tile as string
+		  dim i,nextnode as integer
+		  dim rack as new Rack
+		  
+		  rack.import letters
+		  tile = rack.tiles(index).face
+		  if dagadag_endword(node) then
+		    Listbox1.AddRow word
+		  end
+		  if rack.tiles(index).quantity > 1 then
+		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
+		  else
+		    rack.tiles.remove(index)
+		  end
+		  letters = rack.export
+		  for i = 0 to UBound(rack.tiles)
+		    nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		    if nextnode <> 0 then
+		      suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		    end
+		  next
 		  
 		End Sub
 	#tag EndMethod

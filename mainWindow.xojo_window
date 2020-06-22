@@ -205,7 +205,9 @@ End
 		  
 		  rack.import letters
 		  tile = rack.tiles(index).face
-		  word = tile + word
+		  if dagadag_endword(node) then
+		    Listbox1.AddRow word
+		  end
 		  if rack.tiles(index).quantity > 1 then
 		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
 		  else
@@ -213,12 +215,9 @@ End
 		  end
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
-		    node = dagadag_nextnode(node,rack.tiles(i).face)
-		    if node <> 0 then
-		      if dagadag_endword(node) then
-		        Listbox1.AddRow word
-		      end
-		      prefix(letters,i,word,node)
+		    nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		    if nextnode <> 0 then
+		      prefix(letters,i,rack.tiles(i).face+word,nextnode)
 		    end
 		  next
 		  
@@ -242,7 +241,7 @@ End
 		  dim rack as new Rack
 		  dim letters as string
 		  dim letters_array() as String
-		  dim i,j as integer
+		  dim i,j,node as integer
 		  dim check as Boolean
 		  
 		  listbox1.DeleteAllRows
@@ -253,7 +252,10 @@ End
 		    letters = Join(letters_array,"")
 		    rack.import letters
 		    for i = 0 to UBound(rack.tiles)
-		      prefix(letters,i,"",0)
+		      node = dagadag_nextnode(0,rack.tiles(i).face)
+		      if node <> 0 then
+		        prefix(letters,i,rack.tiles(i).face,node)
+		      end
 		    next
 		  end
 		End Sub

@@ -58,6 +58,133 @@ Begin Window mainWindow
       Visible         =   True
       Width           =   120
    End
+   Begin PushButton PushButton1
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Button"
+      Default         =   False
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   188
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   54
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
+   Begin Listbox Listbox1
+      AutoDeactivate  =   True
+      AutoHideScrollbars=   True
+      Bold            =   False
+      Border          =   True
+      ColumnCount     =   1
+      ColumnsResizable=   False
+      ColumnWidths    =   ""
+      DataField       =   ""
+      DataSource      =   ""
+      DefaultRowHeight=   -1
+      Enabled         =   True
+      EnableDrag      =   False
+      EnableDragReorder=   False
+      GridLinesHorizontal=   0
+      GridLinesVertical=   0
+      HasHeading      =   False
+      HeadingIndex    =   -1
+      Height          =   360
+      HelpTag         =   ""
+      Hierarchical    =   False
+      Index           =   -2147483648
+      InitialParent   =   ""
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   280
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      RequiresSelection=   False
+      Scope           =   0
+      ScrollbarHorizontal=   False
+      ScrollBarVertical=   True
+      SelectionType   =   0
+      ShowDropIndicator=   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      UseFocusRing    =   True
+      Visible         =   True
+      Width           =   300
+      _ScrollOffset   =   0
+      _ScrollWidth    =   -1
+   End
+   Begin TextField TextField1
+      AcceptTabs      =   False
+      Alignment       =   0
+      AutoDeactivate  =   True
+      AutomaticallyCheckSpelling=   False
+      BackColor       =   &cFFFFFF00
+      Bold            =   False
+      Border          =   True
+      CueText         =   ""
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Format          =   ""
+      Height          =   22
+      HelpTag         =   ""
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LimitText       =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Mask            =   ""
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      UseFocusRing    =   True
+      Visible         =   True
+      Width           =   248
+   End
 End
 #tag EndWindow
 
@@ -70,6 +197,35 @@ End
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h0
+		Sub prefix(letters as string, index as integer, word as string, node as integer)
+		  dim tile as string
+		  dim i,nextnode as integer
+		  dim rack as new Rack
+		  
+		  rack.import letters
+		  tile = rack.tiles(index).face
+		  word = tile + word
+		  if rack.tiles(index).quantity > 1 then
+		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
+		  else
+		    rack.tiles.remove(index)
+		  end
+		  letters = rack.export
+		  for i = 0 to UBound(rack.tiles)
+		    node = dagadag_nextnode(node,rack.tiles(i).face)
+		    if node <> 0 then
+		      if dagadag_endword(node) then
+		        Listbox1.AddRow word
+		      end
+		      prefix(letters,i,word,node)
+		    end
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+
 #tag EndWindowCode
 
 #tag Events dagadagButton
@@ -77,6 +233,29 @@ End
 		Sub Action()
 		  Dagadag_module.create_dagadag
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton1
+	#tag Event
+		Sub Action()
+		  dim rack as new Rack
+		  dim letters as string
+		  dim letters_array() as String
+		  dim i,j as integer
+		  dim check as Boolean
+		  
+		  listbox1.DeleteAllRows
+		  letters = TextField1.Text
+		  if len(letters) > 0 and len(letters) < 8 then
+		    letters_array = letters.Split("")
+		    letters_array.Sort
+		    letters = Join(letters_array,"")
+		    rack.import letters
+		    for i = 0 to UBound(rack.tiles)
+		      prefix(letters,i,"",0)
+		    next
+		  end
 		End Sub
 	#tag EndEvent
 #tag EndEvents

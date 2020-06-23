@@ -9,7 +9,7 @@ Begin Window mainWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   400
+   Height          =   800
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
@@ -52,7 +52,7 @@ Begin Window mainWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   360
+      Top             =   760
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -108,7 +108,7 @@ Begin Window mainWindow
       GridLinesVertical=   0
       HasHeading      =   True
       HeadingIndex    =   -1
-      Height          =   360
+      Height          =   760
       HelpTag         =   ""
       Hierarchical    =   False
       Index           =   -2147483648
@@ -297,6 +297,14 @@ End
 		  Listbox1.SortedColumn = 0
 		  Listbox1.Sort
 		  listbox1.Heading(0) = str(ListBox1.ListCount)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events TextField1
+	#tag Event
+		Sub TextChange()
+		  me.Text = me.Text.Uppercase
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

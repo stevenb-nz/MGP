@@ -106,7 +106,7 @@ Begin Window mainWindow
       EnableDragReorder=   False
       GridLinesHorizontal=   0
       GridLinesVertical=   0
-      HasHeading      =   False
+      HasHeading      =   True
       HeadingIndex    =   -1
       Height          =   360
       HelpTag         =   ""
@@ -294,6 +294,9 @@ End
 		      end
 		    next
 		  end
+		  Listbox1.SortedColumn = 0
+		  Listbox1.Sort
+		  listbox1.Heading(0) = str(ListBox1.ListCount)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

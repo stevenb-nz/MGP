@@ -234,6 +234,22 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub startwords(letters as String)
+		  dim rack as new Rack
+		  dim i,node as integer
+		  
+		  rack.import letters
+		  for i = 0 to UBound(rack.tiles)
+		    node = dagadag_nextnode(0,rack.tiles(i).face)
+		    if node <> 0 then
+		      prefix(letters,i,rack.tiles(i).face,node)
+		    end
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub suffix(letters as string, index as integer, word as string, node as integer)
 		  dim tile as string
 		  dim i,nextnode as integer
@@ -274,10 +290,8 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  dim rack as new Rack
 		  dim letters as string
 		  dim letters_array() as String
-		  dim i,j,node as integer
 		  dim check as Boolean
 		  
 		  listbox1.DeleteAllRows
@@ -286,13 +300,7 @@ End
 		    letters_array = letters.Split("")
 		    letters_array.Sort
 		    letters = Join(letters_array,"")
-		    rack.import letters
-		    for i = 0 to UBound(rack.tiles)
-		      node = dagadag_nextnode(0,rack.tiles(i).face)
-		      if node <> 0 then
-		        prefix(letters,i,rack.tiles(i).face,node)
-		      end
-		    next
+		    startwords(letters)
 		  end
 		  Listbox1.SortedColumn = 0
 		  Listbox1.Sort

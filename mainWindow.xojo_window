@@ -303,7 +303,18 @@ End
 #tag Events TextField1
 	#tag Event
 		Sub TextChange()
+		  dim c,temp as string
+		  dim i as integer
+		  
 		  me.Text = me.Text.Uppercase
+		  
+		  for i = 1 to len(me.text)
+		    c = mid(me.text,i,1)
+		    if c = "?" or (c >= "A" and c <= "Z") then
+		      temp = temp + c
+		    end
+		  next
+		  me.Text = temp
 		  
 		End Sub
 	#tag EndEvent

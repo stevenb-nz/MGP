@@ -215,17 +215,25 @@ End
 		  end
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
-		    nextnode = dagadag_nextnode(node,rack.tiles(i).face)
-		    if nextnode <> 0 then
-		      prefix(letters,i,rack.tiles(i).face+word,nextnode)
+		    if rack.tiles(i).face = "?" then
+		      
+		    else
+		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		      if nextnode <> 0 then
+		        prefix(letters,i,rack.tiles(i).face+word,nextnode)
+		      end
 		    end
 		  next
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
 		    for i = 0 to UBound(rack.tiles)
-		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
-		      if nextnode <> 0 then
-		        suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		      if rack.tiles(i).face = "?" then
+		        
+		      else
+		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		        if nextnode <> 0 then
+		          suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		        end
 		      end
 		    next
 		  end
@@ -267,9 +275,13 @@ End
 		  end
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
-		    nextnode = dagadag_nextnode(node,rack.tiles(i).face)
-		    if nextnode <> 0 then
-		      suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		    if rack.tiles(i).face = "?" then
+		      
+		    else
+		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		      if nextnode <> 0 then
+		        suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		      end
 		    end
 		  next
 		  

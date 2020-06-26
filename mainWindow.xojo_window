@@ -248,9 +248,13 @@ End
 		  
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
-		    node = dagadag_nextnode(0,rack.tiles(i).face)
-		    if node <> 0 then
-		      prefix(letters,i,rack.tiles(i).face,node)
+		    if rack.tiles(i).face = "?" then
+		      
+		    else
+		      node = dagadag_nextnode(0,rack.tiles(i).face)
+		      if node <> 0 then
+		        prefix(letters,i,rack.tiles(i).face,node)
+		      end
 		    end
 		  next
 		  

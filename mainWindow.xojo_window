@@ -200,7 +200,7 @@ End
 	#tag Method, Flags = &h0
 		Sub prefix(letters as string, index as integer, word as string, node as integer)
 		  dim tile as string
-		  dim i,nextnode as integer
+		  dim i,j,nextnode as integer
 		  dim rack as new Rack
 		  
 		  rack.import letters
@@ -216,7 +216,12 @@ End
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
 		    if rack.tiles(i).face = "?" then
-		      
+		      for j = 97 to 122
+		        nextnode = dagadag_nextnode(node,chr(j))
+		        if nextnode <> 0 then
+		          prefix(letters,i,chr(j)+word,nextnode)
+		        end
+		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
@@ -228,7 +233,12 @@ End
 		  if node <> 0 then
 		    for i = 0 to UBound(rack.tiles)
 		      if rack.tiles(i).face = "?" then
-		        
+		        for j = 97 to 122
+		          nextnode = dagadag_nextnode(node,chr(j))
+		          if nextnode <> 0 then
+		            suffix(letters,i,word+chr(j),nextnode)
+		          end
+		        next
 		      else
 		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
@@ -244,12 +254,17 @@ End
 	#tag Method, Flags = &h0
 		Sub startwords(letters as String)
 		  dim rack as new Rack
-		  dim i,node as integer
+		  dim i,j,node as integer
 		  
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
 		    if rack.tiles(i).face = "?" then
-		      
+		      for j = 97 to 122
+		        node = dagadag_nextnode(0,chr(j))
+		        if node <> 0 then
+		          prefix(letters,i,chr(j),node)
+		        end
+		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
@@ -264,7 +279,7 @@ End
 	#tag Method, Flags = &h0
 		Sub suffix(letters as string, index as integer, word as string, node as integer)
 		  dim tile as string
-		  dim i,nextnode as integer
+		  dim i,j,nextnode as integer
 		  dim rack as new Rack
 		  
 		  rack.import letters
@@ -280,7 +295,12 @@ End
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
 		    if rack.tiles(i).face = "?" then
-		      
+		      for j = 97 to 122
+		        nextnode = dagadag_nextnode(node,chr(j))
+		        if nextnode <> 0 then
+		          suffix(letters,i,word+chr(j),nextnode)
+		        end
+		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then

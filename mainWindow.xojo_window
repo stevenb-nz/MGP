@@ -84,7 +84,7 @@ Begin Window mainWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   54
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -142,56 +142,22 @@ Begin Window mainWindow
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin TextField TextField1
-      AcceptTabs      =   False
-      Alignment       =   0
-      AutoDeactivate  =   True
-      AutomaticallyCheckSpelling=   False
-      BackColor       =   &cFFFFFF00
-      Bold            =   False
-      Border          =   True
-      CueText         =   ""
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      Format          =   ""
-      Height          =   22
-      HelpTag         =   ""
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
-      LimitText       =   0
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Mask            =   ""
-      Password        =   False
-      ReadOnly        =   False
-      Scope           =   0
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   ""
-      TextColor       =   &c00000000
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   20
-      Transparent     =   False
-      Underline       =   False
-      UseFocusRing    =   True
-      Visible         =   True
-      Width           =   248
-   End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Event
 		Sub Open()
+		  dim s as string
+		  dim i as integer
+		  redim bag(-1)
+		  
 		  Dagadag_module.init_dagadag
+		  s = "AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ??"
+		  for i = 1 to 100
+		    bag.Append mid(s,i,1)
+		  next
+		  bag.Shuffle
 		  
 		End Sub
 	#tag EndEvent
@@ -313,6 +279,11 @@ End
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h0
+		bag() As String
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
 #tag Events dagadagButton
@@ -327,38 +298,26 @@ End
 	#tag Event
 		Sub Action()
 		  dim letters as string
-		  dim letters_array() as String
-		  dim check as Boolean
+		  dim temp() as string
+		  dim bagcount,i as integer
 		  
 		  listbox1.DeleteAllRows
-		  letters = TextField1.Text
-		  if len(letters) > 0 and len(letters) < 8 then
-		    letters_array = letters.Split("")
-		    letters_array.Sort
-		    letters = Join(letters_array,"")
-		    startwords(letters)
+		  bagcount = UBound(bag)+1
+		  if bagcount > 0 then
+		    if bagcount > 7 then
+		      bagcount = 7
+		    end
 		  end
+		  for i = 1 to bagcount
+		    letters = letters + bag.Pop
+		  next
+		  temp = split(letters,"")
+		  temp.Sort
+		  letters = join(temp,"")
+		  startwords(letters)
 		  Listbox1.SortedColumn = 0
 		  Listbox1.Sort
 		  listbox1.Heading(0) = str(ListBox1.ListCount)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events TextField1
-	#tag Event
-		Sub TextChange()
-		  dim c,temp as string
-		  dim i as integer
-		  
-		  me.Text = me.Text.Uppercase
-		  
-		  for i = 1 to len(me.text)
-		    c = mid(me.text,i,1)
-		    if c = "?" or (c >= "A" and c <= "Z") then
-		      temp = temp + c
-		    end
-		  next
-		  me.Text = temp
 		  
 		End Sub
 	#tag EndEvent

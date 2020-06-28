@@ -172,7 +172,7 @@ End
 		  rack.import letters
 		  tile = rack.tiles(index).face
 		  if dagadag_endword(node) then
-		    Listbox1.AddRow word
+		    process(word)
 		  end
 		  if rack.tiles(index).quantity > 1 then
 		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
@@ -218,6 +218,13 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub process(word as String)
+		  Listbox1.AddRow word
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub startwords(letters as String)
 		  dim rack as new Rack
 		  dim i,j,node as integer
@@ -251,7 +258,7 @@ End
 		  rack.import letters
 		  tile = rack.tiles(index).face
 		  if dagadag_endword(node) then
-		    Listbox1.AddRow word
+		    process(word)
 		  end
 		  if rack.tiles(index).quantity > 1 then
 		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1

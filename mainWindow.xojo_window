@@ -148,11 +148,19 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
+		  Dagadag_module.init_dagadag
+		  initbag
+		  
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub initbag()
 		  dim s as string
 		  dim i as integer
 		  redim bag(-1)
 		  
-		  Dagadag_module.init_dagadag
 		  s = "AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ??"
 		  for i = 1 to 100
 		    bag.Append mid(s,i,1)
@@ -160,8 +168,7 @@ End
 		  bag.Shuffle
 		  
 		End Sub
-	#tag EndEvent
-
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub prefix(letters as string, index as integer, word as string, node as integer)
@@ -344,6 +351,9 @@ End
 		    if bagcount > 7 then
 		      bagcount = 7
 		    end
+		  else
+		    initbag
+		    bagcount = 7
 		  end
 		  for i = 1 to bagcount
 		    letters = letters + bag.Pop

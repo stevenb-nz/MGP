@@ -327,6 +327,10 @@ End
 		bag() As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		board(14,14) As Square
+	#tag EndProperty
+
 
 #tag EndWindowCode
 

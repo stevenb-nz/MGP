@@ -1,7 +1,31 @@
 #tag Class
 Protected Class Square
 	#tag Property, Flags = &h0
+		anchor As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		face As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		lettermult As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		partials_h As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		partials_v As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		part_scores_h(51) As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		part_scores_v(51) As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -45,6 +69,11 @@ Protected Class Square
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="wordmult"
+			Group="Behavior"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="lettermult"
 			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty

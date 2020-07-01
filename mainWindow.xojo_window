@@ -250,7 +250,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub prefix(letters as string, index as integer, word as string, node as integer)
+		Sub prefix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, direction as boolean, offset as integer)
 		  dim tile as string
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack
@@ -311,7 +311,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub startwords(letters as String)
+		Sub startwords(letters as String, x as integer, y as integer, direction as boolean, offset as integer)
 		  dim rack as new Rack
 		  dim i,j,node as integer
 		  
@@ -336,7 +336,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub suffix(letters as string, index as integer, word as string, node as integer)
+		Sub suffix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, direction as boolean, offset as integer)
 		  dim tile as string
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack

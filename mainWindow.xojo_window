@@ -250,7 +250,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub prefix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, direction as boolean, offset as integer, pvalue as integer, pmult as integer)
+		Sub prefix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
 		  dim tile as string
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack
@@ -271,13 +271,13 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          prefix(letters,i,chr(j)+word,nextnode)
+		          prefix(letters,i,chr(j)+word,nextnode,x,y,horizontal,0,0,1)
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
-		        prefix(letters,i,rack.tiles(i).face+word,nextnode)
+		        prefix(letters,i,rack.tiles(i).face+word,nextnode,x,y,horizontal,0,0,1)
 		      end
 		    end
 		  next
@@ -288,13 +288,13 @@ End
 		        for j = 97 to 122
 		          nextnode = dagadag_nextnode(node,chr(j))
 		          if nextnode <> 0 then
-		            suffix(letters,i,word+chr(j),nextnode)
+		            suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,0,0,1)
 		          end
 		        next
 		      else
 		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
-		          suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		          suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,0,0,1)
 		        end
 		      end
 		    next
@@ -311,7 +311,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub startwords(letters as String, x as integer, y as integer, direction as boolean)
+		Sub startwords(letters as String, x as integer, y as integer, horizontal as boolean)
 		  dim rack as new Rack
 		  dim i,j,node as integer
 		  
@@ -321,13 +321,13 @@ End
 		      for j = 97 to 122
 		        node = dagadag_nextnode(0,chr(j))
 		        if node <> 0 then
-		          prefix(letters,i,chr(j),node)
+		          prefix(letters,i,chr(j),node,x,y,horizontal,0,0,1)
 		        end
 		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
-		        prefix(letters,i,rack.tiles(i).face,node)
+		        prefix(letters,i,rack.tiles(i).face,node,x,y,horizontal,0,0,1)
 		      end
 		    end
 		  next
@@ -336,7 +336,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub suffix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, direction as boolean, offset as integer, pvalue as integer, pmult as integer)
+		Sub suffix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
 		  dim tile as string
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack
@@ -357,13 +357,13 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          suffix(letters,i,word+chr(j),nextnode)
+		          suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,0,0,1)
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
-		        suffix(letters,i,word+rack.tiles(i).face,nextnode)
+		        suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,0,0,1)
 		      end
 		    end
 		  next
@@ -444,7 +444,7 @@ End
 		  temp = split(letters,"")
 		  temp.Sort
 		  letters = join(temp,"")
-		  startwords(letters)
+		  startwords(letters,7,7,true)
 		  Listbox1.SortedColumn = 0
 		  Listbox1.Sort
 		  listbox1.Heading(0) = str(ListBox1.ListCount)

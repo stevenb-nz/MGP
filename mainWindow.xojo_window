@@ -271,13 +271,13 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          prefix(letters,i,chr(j)+word,nextnode,x,y,horizontal,0,0,1)
+		          prefix(letters,i,chr(j)+word,nextnode,x,y,horizontal,offset-1,0,1)
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
-		        prefix(letters,i,rack.tiles(i).face+word,nextnode,x,y,horizontal,0,0,1)
+		        prefix(letters,i,rack.tiles(i).face+word,nextnode,x,y,horizontal,offset-1,0,1)
 		      end
 		    end
 		  next
@@ -288,13 +288,13 @@ End
 		        for j = 97 to 122
 		          nextnode = dagadag_nextnode(node,chr(j))
 		          if nextnode <> 0 then
-		            suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,0,0,1)
+		            suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,1,0,1)
 		          end
 		        next
 		      else
 		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
-		          suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,0,0,1)
+		          suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,1,0,1)
 		        end
 		      end
 		    next
@@ -321,13 +321,13 @@ End
 		      for j = 97 to 122
 		        node = dagadag_nextnode(0,chr(j))
 		        if node <> 0 then
-		          prefix(letters,i,chr(j),node,x,y,horizontal,0,0,1)
+		          prefix(letters,i,chr(j),node,x,y,horizontal,-1,0,1)
 		        end
 		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
-		        prefix(letters,i,rack.tiles(i).face,node,x,y,horizontal,0,0,1)
+		        prefix(letters,i,rack.tiles(i).face,node,x,y,horizontal,-1,0,1)
 		      end
 		    end
 		  next
@@ -357,13 +357,13 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,0,0,1)
+		          suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,offset+1,0,1)
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
-		        suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,0,0,1)
+		        suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,offset+1,0,1)
 		      end
 		    end
 		  next

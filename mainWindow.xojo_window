@@ -176,75 +176,80 @@ End
 		  dim i,j as integer
 		  dim temp as square
 		  
-		  for i = 0 to 14
-		    for j = 0 to 14
+		  for i = 0 to 16
+		    for j = 0 to 16
 		      temp = new Square
-		      temp.wordmult = 1
-		      temp.lettermult = 1
+		      if i = 0 or i = 16 or j = 0 or j = 16 then
+		        temp.border = true
+		      else
+		        temp.border = false
+		        temp.wordmult = 1
+		        temp.lettermult = 1
+		      end
 		      board(i,j) = temp
 		    next
 		  next
-		  board(0,0).wordmult = 3
-		  board(0,7).wordmult = 3
-		  board(0,14).wordmult = 3
-		  board(7,0).wordmult = 3
-		  board(7,14).wordmult = 3
-		  board(14,0).wordmult = 3
-		  board(14,7).wordmult = 3
-		  board(14,14).wordmult = 3
-		  board(1,1).wordmult = 2
-		  board(1,13).wordmult = 2
+		  board(1,1).wordmult = 3
+		  board(1,8).wordmult = 3
+		  board(1,15).wordmult = 3
+		  board(8,1).wordmult = 3
+		  board(8,15).wordmult = 3
+		  board(15,1).wordmult = 3
+		  board(15,8).wordmult = 3
+		  board(15,15).wordmult = 3
 		  board(2,2).wordmult = 2
-		  board(2,12).wordmult = 2
+		  board(2,14).wordmult = 2
 		  board(3,3).wordmult = 2
-		  board(3,11).wordmult = 2
+		  board(3,13).wordmult = 2
 		  board(4,4).wordmult = 2
-		  board(4,10).wordmult = 2
-		  board(7,7).wordmult = 2
-		  board(10,4).wordmult = 2
-		  board(10,10).wordmult = 2
-		  board(11,3).wordmult = 2
+		  board(4,12).wordmult = 2
+		  board(5,5).wordmult = 2
+		  board(5,11).wordmult = 2
+		  board(8,8).wordmult = 2
+		  board(11,5).wordmult = 2
 		  board(11,11).wordmult = 2
-		  board(12,2).wordmult = 2
+		  board(12,4).wordmult = 2
 		  board(12,12).wordmult = 2
-		  board(13,1).wordmult = 2
+		  board(13,3).wordmult = 2
 		  board(13,13).wordmult = 2
-		  board(0,3).lettermult = 2
-		  board(3,0).lettermult = 2
-		  board(0,11).lettermult = 2
-		  board(11,0).lettermult = 2
-		  board(3,14).lettermult = 2
-		  board(14,3).lettermult = 2
-		  board(11,14).lettermult = 2
-		  board(14,11).lettermult = 2
-		  board(2,6).lettermult = 2
-		  board(2,8).lettermult = 2
-		  board(12,6).lettermult = 2
-		  board(12,8).lettermult = 2
-		  board(6,2).lettermult = 2
-		  board(8,2).lettermult = 2
-		  board(6,12).lettermult = 2
-		  board(8,12).lettermult = 2
+		  board(14,2).wordmult = 2
+		  board(14,14).wordmult = 2
+		  board(1,4).lettermult = 2
+		  board(4,1).lettermult = 2
+		  board(1,12).lettermult = 2
+		  board(12,1).lettermult = 2
+		  board(4,15).lettermult = 2
+		  board(15,4).lettermult = 2
+		  board(12,15).lettermult = 2
+		  board(15,12).lettermult = 2
 		  board(3,7).lettermult = 2
+		  board(3,9).lettermult = 2
+		  board(13,7).lettermult = 2
+		  board(13,9).lettermult = 2
 		  board(7,3).lettermult = 2
-		  board(7,11).lettermult = 2
-		  board(11,7).lettermult = 2
-		  board(6,6).lettermult = 2
-		  board(6,8).lettermult = 2
-		  board(8,6).lettermult = 2
-		  board(8,8).lettermult = 2
-		  board(1,5).lettermult = 3
-		  board(1,9).lettermult = 3
-		  board(5,1).lettermult = 3
-		  board(5,5).lettermult = 3
-		  board(5,9).lettermult = 3
-		  board(5,13).lettermult = 3
-		  board(9,1).lettermult = 3
-		  board(9,5).lettermult = 3
-		  board(9,9).lettermult = 3
-		  board(9,13).lettermult = 3
-		  board(13,5).lettermult = 3
-		  board(13,9).lettermult = 3
+		  board(9,3).lettermult = 2
+		  board(7,13).lettermult = 2
+		  board(9,13).lettermult = 2
+		  board(4,8).lettermult = 2
+		  board(8,4).lettermult = 2
+		  board(8,12).lettermult = 2
+		  board(12,8).lettermult = 2
+		  board(7,7).lettermult = 2
+		  board(7,9).lettermult = 2
+		  board(9,7).lettermult = 2
+		  board(9,9).lettermult = 2
+		  board(2,6).lettermult = 3
+		  board(2,10).lettermult = 3
+		  board(6,2).lettermult = 3
+		  board(6,6).lettermult = 3
+		  board(6,10).lettermult = 3
+		  board(6,14).lettermult = 3
+		  board(10,2).lettermult = 3
+		  board(10,6).lettermult = 3
+		  board(10,10).lettermult = 3
+		  board(10,14).lettermult = 3
+		  board(14,6).lettermult = 3
+		  board(14,10).lettermult = 3
 		  
 		End Sub
 	#tag EndMethod
@@ -257,13 +262,13 @@ End
 		  
 		  rack.import letters
 		  tile = rack.tiles(index).face
-		  if dagadag_endword(node) then
-		    process(word)
-		  end
 		  if rack.tiles(index).quantity > 1 then
 		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
 		  else
 		    rack.tiles.remove(index)
+		  end
+		  if dagadag_endword(node) then
+		    process(word)
 		  end
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
@@ -343,13 +348,13 @@ End
 		  
 		  rack.import letters
 		  tile = rack.tiles(index).face
-		  if dagadag_endword(node) then
-		    process(word)
-		  end
 		  if rack.tiles(index).quantity > 1 then
 		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
 		  else
 		    rack.tiles.remove(index)
+		  end
+		  if dagadag_endword(node) then
+		    process(word)
 		  end
 		  letters = rack.export
 		  for i = 0 to UBound(rack.tiles)
@@ -407,7 +412,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		board(14,14) As Square
+		board(16,16) As Square
 	#tag EndProperty
 
 
@@ -444,7 +449,7 @@ End
 		  temp = split(letters,"")
 		  temp.Sort
 		  letters = join(temp,"")
-		  startwords(letters,7,7,true)
+		  startwords(letters,8,8,true)
 		  Listbox1.SortedColumn = 0
 		  Listbox1.Sort
 		  listbox1.Heading(0) = str(ListBox1.ListCount)

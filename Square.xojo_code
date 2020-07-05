@@ -5,6 +5,10 @@ Protected Class Square
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		border As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		face As String
 	#tag EndProperty
 
@@ -76,6 +80,26 @@ Protected Class Square
 			Name="lettermult"
 			Group="Behavior"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="anchor"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="face"
+			Group="Behavior"
+			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="partials_h"
+			Group="Behavior"
+			Type="boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="partials_v"
+			Group="Behavior"
+			Type="boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

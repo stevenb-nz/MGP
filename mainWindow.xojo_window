@@ -255,34 +255,40 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub prefix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
+		Sub prefix(letters as string, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
 		  dim tile as string
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack
 		  
-		  rack.import letters
-		  tile = rack.tiles(index).face
-		  if rack.tiles(index).quantity > 1 then
-		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
-		  else
-		    rack.tiles.remove(index)
-		  end
 		  if dagadag_endword(node) then
 		    process(word)
 		  end
-		  letters = rack.export
+		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
 		    if rack.tiles(i).face = "?" then
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          prefix(letters,i,chr(j)+word,nextnode,x,y,horizontal,offset-1,0,1)
+		          if rack.tiles(i).quantity > 1 then
+		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		          else
+		            rack.tiles.remove(i)
+		          end
+		          prefix(rack.export,chr(j)+word,nextnode,x,y,horizontal,offset-1,0,1)
+		          rack.import letters
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
-		        prefix(letters,i,rack.tiles(i).face+word,nextnode,x,y,horizontal,offset-1,0,1)
+		        tile = rack.tiles(i).face
+		        if rack.tiles(i).quantity > 1 then
+		          rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		        else
+		          rack.tiles.remove(i)
+		        end
+		        prefix(rack.export,tile+word,nextnode,x,y,horizontal,offset-1,0,1)
+		        rack.import letters
 		      end
 		    end
 		  next
@@ -293,13 +299,26 @@ End
 		        for j = 97 to 122
 		          nextnode = dagadag_nextnode(node,chr(j))
 		          if nextnode <> 0 then
-		            suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,1,0,1)
+		            if rack.tiles(i).quantity > 1 then
+		              rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		            else
+		              rack.tiles.remove(i)
+		            end
+		            suffix(rack.export,word+chr(j),nextnode,x,y,horizontal,1,0,1)
+		            rack.import letters
 		          end
 		        next
 		      else
 		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
-		          suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,1,0,1)
+		          tile = rack.tiles(i).face
+		          if rack.tiles(i).quantity > 1 then
+		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		          else
+		            rack.tiles.remove(i)
+		          end
+		          suffix(rack.export,word+tile,nextnode,x,y,horizontal,1,0,1)
+		          rack.import letters
 		        end
 		      end
 		    next
@@ -317,6 +336,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub startwords(letters as String, x as integer, y as integer, horizontal as boolean)
+		  dim tile as string
 		  dim rack as new Rack
 		  dim i,j,node as integer
 		  
@@ -326,13 +346,26 @@ End
 		      for j = 97 to 122
 		        node = dagadag_nextnode(0,chr(j))
 		        if node <> 0 then
-		          prefix(letters,i,chr(j),node,x,y,horizontal,-1,0,1)
+		          if rack.tiles(i).quantity > 1 then
+		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		          else
+		            rack.tiles.remove(i)
+		          end
+		          prefix(rack.export,chr(j),node,x,y,horizontal,-1,0,1)
+		          rack.import letters
 		        end
 		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
-		        prefix(letters,i,rack.tiles(i).face,node,x,y,horizontal,-1,0,1)
+		        tile = rack.tiles(i).face
+		        if rack.tiles(i).quantity > 1 then
+		          rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		        else
+		          rack.tiles.remove(i)
+		        end
+		        prefix(rack.export,tile,node,x,y,horizontal,-1,0,1)
+		        rack.import letters
 		      end
 		    end
 		  next
@@ -341,34 +374,40 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub suffix(letters as string, index as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
+		Sub suffix(letters as string, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
 		  dim tile as string
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack
 		  
-		  rack.import letters
-		  tile = rack.tiles(index).face
-		  if rack.tiles(index).quantity > 1 then
-		    rack.tiles(index).quantity = rack.tiles(index).quantity - 1
-		  else
-		    rack.tiles.remove(index)
-		  end
 		  if dagadag_endword(node) then
 		    process(word)
 		  end
-		  letters = rack.export
+		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
 		    if rack.tiles(i).face = "?" then
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          suffix(letters,i,word+chr(j),nextnode,x,y,horizontal,offset+1,0,1)
+		          if rack.tiles(i).quantity > 1 then
+		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		          else
+		            rack.tiles.remove(i)
+		          end
+		          suffix(rack.export,word+chr(j),nextnode,x,y,horizontal,offset+1,0,1)
+		          rack.import letters
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
-		        suffix(letters,i,word+rack.tiles(i).face,nextnode,x,y,horizontal,offset+1,0,1)
+		        tile = rack.tiles(i).face
+		        if rack.tiles(i).quantity > 1 then
+		          rack.tiles(i).quantity = rack.tiles(i).quantity - 1
+		        else
+		          rack.tiles.remove(i)
+		        end
+		        suffix(rack.export,word+tile,nextnode,x,y,horizontal,offset+1,0,1)
+		        rack.import letters
 		      end
 		    end
 		  next

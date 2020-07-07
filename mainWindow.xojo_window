@@ -261,7 +261,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(word)
+		    process(word,pvalue*pmult)
 		  end
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
@@ -269,14 +269,22 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          prefix(letters.Replace(rack.tiles(i).face,""),chr(j)+word,nextnode,x,y,horizontal,offset-1,0,1)
+		          if horizontal then
+		            prefix(letters.Replace(rack.tiles(i).face,""),chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult)
+		          else
+		            prefix(letters.Replace(rack.tiles(i).face,""),chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult)
+		          end
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
 		        tile = rack.tiles(i).face
-		        prefix(letters.Replace(tile,""),tile+word,nextnode,x,y,horizontal,offset-1,0,1)
+		        if horizontal then
+		          prefix(letters.Replace(tile,""),tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		        else
+		          prefix(letters.Replace(tile,""),tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		        end
 		      end
 		    end
 		  next
@@ -287,14 +295,22 @@ End
 		        for j = 97 to 122
 		          nextnode = dagadag_nextnode(node,chr(j))
 		          if nextnode <> 0 then
-		            suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,1,0,1)
+		            if horizontal then
+		              suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,1,pvalue,pmult*board(x+offset,y).wordmult)
+		            else
+		              suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,1,pvalue,pmult*board(x,y+offset).wordmult)
+		            end
 		          end
 		        next
 		      else
 		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
 		          tile = rack.tiles(i).face
-		          suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,1,0,1)
+		          if horizontal then
+		            suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		          else
+		            suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		          end
 		        end
 		      end
 		    next
@@ -304,8 +320,8 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub process(word as String)
-		  Listbox1.AddRow word
+		Sub process(word as String, score as integer)
+		  Listbox1.AddRow word+" "+str(score)
 		  
 		End Sub
 	#tag EndMethod
@@ -322,14 +338,14 @@ End
 		      for j = 97 to 122
 		        node = dagadag_nextnode(0,chr(j))
 		        if node <> 0 then
-		          prefix(letters.Replace(rack.tiles(i).face,""),chr(j),node,x,y,horizontal,-1,0,1)
+		          prefix(letters.Replace(rack.tiles(i).face,""),chr(j),node,x,y,horizontal,-1,0,board(x,y).wordmult)
 		        end
 		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
 		        tile = rack.tiles(i).face
-		        prefix(letters.Replace(tile,""),tile,node,x,y,horizontal,-1,0,1)
+		        prefix(letters.Replace(tile,""),tile,node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult)
 		      end
 		    end
 		  next
@@ -344,7 +360,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(word)
+		    process(word,pvalue*pmult)
 		  end
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
@@ -352,14 +368,22 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,offset+1,0,1)
+		          if horizontal then
+		            suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,offset+1,pvalue,pmult*board(x+offset,y).wordmult)
+		          else
+		            suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,offset+1,pvalue,pmult*board(x,y+offset).wordmult)
+		          end
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
 		        tile = rack.tiles(i).face
-		        suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,offset+1,0,1)
+		        if horizontal then
+		          suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,offset+1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		        else
+		          suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,offset+1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		        end
 		      end
 		    end
 		  next

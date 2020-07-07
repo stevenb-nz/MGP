@@ -269,26 +269,14 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          if rack.tiles(i).quantity > 1 then
-		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		          else
-		            rack.tiles.remove(i)
-		          end
-		          prefix(rack.export,chr(j)+word,nextnode,x,y,horizontal,offset-1,0,1)
-		          rack.import letters
+		          prefix(letters.Replace(rack.tiles(i).face,""),chr(j)+word,nextnode,x,y,horizontal,offset-1,0,1)
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
 		        tile = rack.tiles(i).face
-		        if rack.tiles(i).quantity > 1 then
-		          rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		        else
-		          rack.tiles.remove(i)
-		        end
-		        prefix(rack.export,tile+word,nextnode,x,y,horizontal,offset-1,0,1)
-		        rack.import letters
+		        prefix(letters.Replace(tile,""),tile+word,nextnode,x,y,horizontal,offset-1,0,1)
 		      end
 		    end
 		  next
@@ -299,26 +287,14 @@ End
 		        for j = 97 to 122
 		          nextnode = dagadag_nextnode(node,chr(j))
 		          if nextnode <> 0 then
-		            if rack.tiles(i).quantity > 1 then
-		              rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		            else
-		              rack.tiles.remove(i)
-		            end
-		            suffix(rack.export,word+chr(j),nextnode,x,y,horizontal,1,0,1)
-		            rack.import letters
+		            suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,1,0,1)
 		          end
 		        next
 		      else
 		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
 		          tile = rack.tiles(i).face
-		          if rack.tiles(i).quantity > 1 then
-		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		          else
-		            rack.tiles.remove(i)
-		          end
-		          suffix(rack.export,word+tile,nextnode,x,y,horizontal,1,0,1)
-		          rack.import letters
+		          suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,1,0,1)
 		        end
 		      end
 		    next
@@ -346,26 +322,14 @@ End
 		      for j = 97 to 122
 		        node = dagadag_nextnode(0,chr(j))
 		        if node <> 0 then
-		          if rack.tiles(i).quantity > 1 then
-		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		          else
-		            rack.tiles.remove(i)
-		          end
-		          prefix(rack.export,chr(j),node,x,y,horizontal,-1,0,1)
-		          rack.import letters
+		          prefix(letters.Replace(rack.tiles(i).face,""),chr(j),node,x,y,horizontal,-1,0,1)
 		        end
 		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
 		        tile = rack.tiles(i).face
-		        if rack.tiles(i).quantity > 1 then
-		          rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		        else
-		          rack.tiles.remove(i)
-		        end
-		        prefix(rack.export,tile,node,x,y,horizontal,-1,0,1)
-		        rack.import letters
+		        prefix(letters.Replace(tile,""),tile,node,x,y,horizontal,-1,0,1)
 		      end
 		    end
 		  next
@@ -388,26 +352,14 @@ End
 		      for j = 97 to 122
 		        nextnode = dagadag_nextnode(node,chr(j))
 		        if nextnode <> 0 then
-		          if rack.tiles(i).quantity > 1 then
-		            rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		          else
-		            rack.tiles.remove(i)
-		          end
-		          suffix(rack.export,word+chr(j),nextnode,x,y,horizontal,offset+1,0,1)
-		          rack.import letters
+		          suffix(letters.Replace(rack.tiles(i).face,""),word+chr(j),nextnode,x,y,horizontal,offset+1,0,1)
 		        end
 		      next
 		    else
 		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		      if nextnode <> 0 then
 		        tile = rack.tiles(i).face
-		        if rack.tiles(i).quantity > 1 then
-		          rack.tiles(i).quantity = rack.tiles(i).quantity - 1
-		        else
-		          rack.tiles.remove(i)
-		        end
-		        suffix(rack.export,word+tile,nextnode,x,y,horizontal,offset+1,0,1)
-		        rack.import letters
+		        suffix(letters.Replace(tile,""),word+tile,nextnode,x,y,horizontal,offset+1,0,1)
 		      end
 		    end
 		  next

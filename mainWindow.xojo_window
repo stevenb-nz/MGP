@@ -95,7 +95,7 @@ Begin Window mainWindow
       AutoHideScrollbars=   True
       Bold            =   False
       Border          =   True
-      ColumnCount     =   1
+      ColumnCount     =   2
       ColumnsResizable=   False
       ColumnWidths    =   ""
       DataField       =   ""
@@ -321,7 +321,8 @@ End
 
 	#tag Method, Flags = &h0
 		Sub process(word as String, score as integer)
-		  Listbox1.AddRow word+" "+str(score)
+		  Listbox1.AddRow word
+		  listbox1.Cell(Listbox1.LastIndex,1) = str(score)
 		  
 		End Sub
 	#tag EndMethod
@@ -470,6 +471,23 @@ End
 		  listbox1.Heading(0) = str(ListBox1.ListCount)
 		  
 		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Listbox1
+	#tag Event
+		Function CompareRows(row1 as Integer, row2 as Integer, column as Integer, ByRef result as Integer) As Boolean
+		  Select Case column
+		  Case 0
+		    Return False
+		    
+		  Case 1
+		    result = Sign(Val(Me.Cell(row1, column)) - Val(Me.Cell( row2, column)))
+		    Return True
+		    
+		  Else
+		    Return False
+		  End Select
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior

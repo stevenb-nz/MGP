@@ -95,9 +95,9 @@ Begin Window mainWindow
       AutoHideScrollbars=   True
       Bold            =   False
       Border          =   True
-      ColumnCount     =   2
+      ColumnCount     =   4
       ColumnsResizable=   False
-      ColumnWidths    =   ""
+      ColumnWidths    =   "15%,35%,15%,35%"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
@@ -321,8 +321,10 @@ End
 
 	#tag Method, Flags = &h0
 		Sub process(word as String, score as integer)
-		  Listbox1.AddRow word
-		  listbox1.Cell(Listbox1.LastIndex,1) = str(score)
+		  Listbox1.AddRow ""
+		  listbox1.Cell(Listbox1.LastIndex,1) = word
+		  listbox1.Cell(Listbox1.LastIndex,2) = str(score)
+		  listbox1.Cell(Listbox1.LastIndex,3) = ""
 		  
 		End Sub
 	#tag EndMethod
@@ -466,9 +468,9 @@ End
 		  temp.Sort
 		  letters = join(temp,"")
 		  startwords(letters,8,8,true)
-		  Listbox1.SortedColumn = 0
+		  Listbox1.SortedColumn = 1
 		  Listbox1.Sort
-		  listbox1.Heading(0) = str(ListBox1.ListCount)
+		  listbox1.Heading(1) = str(ListBox1.ListCount)
 		  
 		End Sub
 	#tag EndEvent
@@ -481,8 +483,14 @@ End
 		    Return False
 		    
 		  Case 1
+		    Return False
+		    
+		  Case 2
 		    result = Sign(Val(Me.Cell(row1, column)) - Val(Me.Cell( row2, column)))
 		    Return True
+		    
+		  Case 3
+		    Return False
 		    
 		  Else
 		    Return False

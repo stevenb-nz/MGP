@@ -261,7 +261,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(word,pvalue*pmult)
+		    process("",word,pvalue*pmult,letters)
 		  end
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
@@ -320,11 +320,11 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub process(word as String, score as integer)
-		  Listbox1.AddRow ""
+		Sub process(location as string, word as String, score as integer, leave as String)
+		  Listbox1.AddRow location
 		  listbox1.Cell(Listbox1.LastIndex,1) = word
 		  listbox1.Cell(Listbox1.LastIndex,2) = str(score)
-		  listbox1.Cell(Listbox1.LastIndex,3) = ""
+		  listbox1.Cell(Listbox1.LastIndex,3) = leave
 		  
 		End Sub
 	#tag EndMethod
@@ -363,7 +363,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(word,pvalue*pmult)
+		    process("",word,pvalue*pmult,letters)
 		  end
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)

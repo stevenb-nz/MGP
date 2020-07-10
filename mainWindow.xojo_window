@@ -261,7 +261,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(str(offset),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		    process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		  end
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)
@@ -363,7 +363,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(str(lmost),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		    process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		  end
 		  rack.import letters
 		  for i = 0 to UBound(rack.tiles)

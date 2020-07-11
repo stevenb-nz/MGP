@@ -257,7 +257,7 @@ End
 	#tag Method, Flags = &h0
 		Sub prefix(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer)
 		  dim tile as string
-		  dim i,j,nextnode as integer
+		  dim i,j,nextnode,lmost as integer
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
@@ -290,15 +290,17 @@ End
 		  next
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
 		    for i = 0 to UBound(rack.tiles)
 		      if rack.tiles(i).face = "?" then
 		        for j = 97 to 122
 		          nextnode = dagadag_nextnode(node,chr(j))
 		          if nextnode <> 0 then
 		            if horizontal then
-		              suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,1,offset,pvalue,pmult*board(x+offset,y).wordmult)
+		              suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult)
 		            else
-		              suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,1,offset,pvalue,pmult*board(x,y+offset).wordmult)
+		              suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult)
 		            end
 		          end
 		        next
@@ -307,9 +309,9 @@ End
 		        if nextnode <> 0 then
 		          tile = rack.tiles(i).face
 		          if horizontal then
-		            suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,1,offset,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		            suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
 		          else
-		            suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,1,offset,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		            suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
 		          end
 		        end
 		      end

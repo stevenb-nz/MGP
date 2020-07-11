@@ -264,30 +264,32 @@ End
 		    process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		  end
 		  rack.import letters
-		  for i = 0 to UBound(rack.tiles)
-		    if rack.tiles(i).face = "?" then
-		      for j = 97 to 122
-		        nextnode = dagadag_nextnode(node,chr(j))
+		  if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		    for i = 0 to UBound(rack.tiles)
+		      if rack.tiles(i).face = "?" then
+		        for j = 97 to 122
+		          nextnode = dagadag_nextnode(node,chr(j))
+		          if nextnode <> 0 then
+		            if horizontal then
+		              prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult)
+		            else
+		              prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult)
+		            end
+		          end
+		        next
+		      else
+		        nextnode = dagadag_nextnode(node,rack.tiles(i).face)
 		        if nextnode <> 0 then
+		          tile = rack.tiles(i).face
 		          if horizontal then
-		            prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult)
+		            prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
 		          else
-		            prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult)
+		            prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
 		          end
 		        end
-		      next
-		    else
-		      nextnode = dagadag_nextnode(node,rack.tiles(i).face)
-		      if nextnode <> 0 then
-		        tile = rack.tiles(i).face
-		        if horizontal then
-		          prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
-		        else
-		          prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
-		        end
 		      end
-		    end
-		  next
+		    next
+		  end
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
 		    lmost = offset

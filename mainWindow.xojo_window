@@ -337,7 +337,19 @@ End
 		        next
 		      end
 		    else
-		      
+		      do
+		        tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		        nextnode = dagadag_nextnode(node,tile)
+		        if nextnode <> 0 then
+		          node = nextnode
+		          word = tile + word
+		          pvalue = pvalue + tile_value(tile)
+		          offset = offset + 1
+		        end
+		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		      if dagadag_endword(node) then
+		        process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		      end
 		    end
 		  end
 		  

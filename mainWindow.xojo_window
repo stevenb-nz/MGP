@@ -294,7 +294,16 @@ End
 		      end
 		    end
 		  else
-		    
+		    do
+		      tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		      nextnode = dagadag_nextnode(node,tile)
+		      if nextnode <> 0 then
+		        node = nextnode
+		        word = tile + word
+		        pvalue = pvalue + tile_value(tile)
+		        offset = offset - 1
+		      end
+		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  end
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then

@@ -158,12 +158,35 @@ End
 
 	#tag Method, Flags = &h0
 		Sub do_move(letters as string)
+		  dim i,j as integer
+		  
 		  if board(8,8).face = "" then
 		    startwords(letters,8,8,true)
 		  else
-		    
+		    for i = 1 to 15
+		      for j = 1 to 15
+		        if board(i,j).face = "" then
+		          if board(i+1,j).face = "" and board(i-1,j).face = "" and board(i,j+1).face = "" and board(i,j-1).face = "" then
+		            board(i,j).anchor = false
+		          else
+		            board(i,j).anchor = true
+		          end
+		        else
+		          board(i,j).anchor = false
+		        end
+		      next
+		    next
+		    for i = 1 to 15
+		      for j = 1 to 15
+		        if board(i,j).anchor then
+		          precomp(letters,i,j)
+		          startwords(letters,i,j,true)
+		          startwords(letters,i,j,false)
+		        end
+		      next
+		    next
 		  end
-		  
+		  'choose and play move
 		End Sub
 	#tag EndMethod
 
@@ -261,6 +284,12 @@ End
 		  board(10,14).lettermult = 3
 		  board(14,6).lettermult = 3
 		  board(14,10).lettermult = 3
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub precomp(letters as string, x as integer, y as integer)
 		  
 		End Sub
 	#tag EndMethod

@@ -157,6 +157,17 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub do_move(letters as string)
+		  if board(8,8).face = "" then
+		    startwords(letters,8,8,true)
+		  else
+		    
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub initbag()
 		  dim s as string
 		  dim i as integer
@@ -573,7 +584,7 @@ End
 		  temp = split(letters,"")
 		  temp.Sort
 		  letters = join(temp,"")
-		  startwords(letters,8,8,true)
+		  do_move(letters)
 		  Listbox1.SortedColumn = 1
 		  Listbox1.Sort
 		  listbox1.Heading(1) = str(ListBox1.ListCount)

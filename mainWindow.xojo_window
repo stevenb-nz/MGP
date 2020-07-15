@@ -290,6 +290,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
+		  dim rack as new Rack
+		  
+		  rack.import letters
 		  
 		End Sub
 	#tag EndMethod

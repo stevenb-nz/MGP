@@ -291,9 +291,16 @@ End
 	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
+		  dim i,j,k as integer
 		  
 		  rack.import letters
-		  
+		  for i = 1 to 15
+		    for j = 1 to 15
+		      if board(i,j).anchor then
+		        
+		      end
+		    next
+		  next
 		End Sub
 	#tag EndMethod
 

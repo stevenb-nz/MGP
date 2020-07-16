@@ -291,11 +291,9 @@ End
 	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
-		  dim i,j,k as integer
+		  dim i,j,k,l as integer
 		  
-		  if instr(letters,"?") = 0 then
-		    rack.import letters
-		  end
+		  rack.import letters
 		  for i = 1 to 15
 		    for j = 1 to 15
 		      if board(i,j).anchor then
@@ -307,15 +305,14 @@ End
 		          partials_v = true
 		          redim board.part_scores_v(51)
 		        end
-		        if instr(letters,"?") > 0 then
-		          for k = 97 to 122
-		            
-		          next
-		        else
-		          for k = 0 to ubound(rack.tiles)
-		            
-		          next
-		        end
+		        for k = 0 to ubound(rack.tiles)
+		          if rack.tiles(k)="?" then
+		            for l = 97 to 122
+		              
+		            next
+		          end
+		          
+		        next
 		      end
 		    next
 		  next

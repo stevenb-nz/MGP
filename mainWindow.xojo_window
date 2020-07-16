@@ -293,28 +293,32 @@ End
 		  dim rack as new Rack
 		  dim i,j,k as integer
 		  
-		  if instr(letters,"?") > 0 then
-		    for i = 1 to 15
-		      for j = 1 to 15
-		        if board(i,j).anchor then
+		  if instr(letters,"?") = 0 then
+		    rack.import letters
+		  end
+		  for i = 1 to 15
+		    for j = 1 to 15
+		      if board(i,j).anchor then
+		        if board(i-1,j).face <> "" or board(i+1,j).face <> "" then
+		          partials_h = true
+		          redim board.part_scores_h(51)
+		        end
+		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
+		          partials_v = true
+		          redim board.part_scores_v(51)
+		        end
+		        if instr(letters,"?") > 0 then
 		          for k = 97 to 122
 		            
 		          next
-		        end
-		      next
-		    next
-		  else
-		    rack.import letters
-		    for i = 1 to 15
-		      for j = 1 to 15
-		        if board(i,j).anchor then
+		        else
 		          for k = 0 to ubound(rack.tiles)
 		            
 		          next
 		        end
-		      next
+		      end
 		    next
-		  end
+		  next
 		  
 		End Sub
 	#tag EndMethod

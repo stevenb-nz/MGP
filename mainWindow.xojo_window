@@ -293,14 +293,29 @@ End
 		  dim rack as new Rack
 		  dim i,j,k as integer
 		  
-		  rack.import letters
-		  for i = 1 to 15
-		    for j = 1 to 15
-		      if board(i,j).anchor then
-		        
-		      end
+		  if instr(letters,"?") > 0 then
+		    for i = 1 to 15
+		      for j = 1 to 15
+		        if board(i,j).anchor then
+		          for k = 97 to 122
+		            
+		          next
+		        end
+		      next
 		    next
-		  next
+		  else
+		    rack.import letters
+		    for i = 1 to 15
+		      for j = 1 to 15
+		        if board(i,j).anchor then
+		          for k = 0 to ubound(rack.tiles)
+		            
+		          next
+		        end
+		      next
+		    next
+		  end
+		  
 		End Sub
 	#tag EndMethod
 

@@ -298,15 +298,15 @@ End
 		    for j = 1 to 15
 		      if board(i,j).anchor then
 		        if board(i-1,j).face <> "" or board(i+1,j).face <> "" then
-		          partials_h = true
-		          redim board.part_scores_h(51)
+		          board(i,j).partials_h = true
+		          redim board(i,j).part_scores_h(51)
 		        end
 		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
-		          partials_v = true
-		          redim board.part_scores_v(51)
+		          board(i,j).partials_v = true
+		          redim board(i,j).part_scores_v(51)
 		        end
 		        for k = 0 to ubound(rack.tiles)
-		          if rack.tiles(k)="?" then
+		          if rack.tiles(k).face="?" then
 		            for l = 97 to 122
 		              
 		            next

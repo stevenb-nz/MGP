@@ -148,7 +148,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  Dagadag_module.init_dagadag
+		  init_dagadag
 		  initboard
 		  initbag
 		  
@@ -611,7 +611,7 @@ End
 #tag Events dagadagButton
 	#tag Event
 		Sub Action()
-		  Dagadag_module.create_dagadag
+		  create_dagadag
 		  
 		End Sub
 	#tag EndEvent

@@ -305,8 +305,17 @@ End
 		          word = "?"
 		          ptot = 0
 		          offset = -1
-		          
-		          'work out part word & part score
+		          while board(i+offset,j).face <> ""
+		            word = board(i+offset,j).face + word
+		            ptot = ptot + tile_value(board(i+offset,j).face)
+		            offset = offset - 1
+		          wend
+		          offset = 1
+		          while board(i+offset,j).face <> ""
+		            word = word + board(i+offset,j).face
+		            ptot = ptot + tile_value(board(i+offset,j).face)
+		            offset = offset + 1
+		          wend
 		          for k = 0 to ubound(rack.tiles)
 		            if rack.tiles(k).face = "?" then
 		              'work out full score

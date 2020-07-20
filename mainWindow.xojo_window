@@ -291,7 +291,7 @@ End
 	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
-		  dim i,j,k,l,offset,ptot,wmult as integer
+		  dim i,j,k,l,offset,ptot,tot,wmult as integer
 		  dim word as string
 		  
 		  rack.import letters
@@ -318,20 +318,12 @@ End
 		          wend
 		          for k = 0 to ubound(rack.tiles)
 		            if rack.tiles(k).face = "?" then
-		              'work out full score
+		              tot = ptot * wmult
 		              for l = 97 to 122
-		                if isWord(chr(l)) then
-		                  'register full score
-		                else
-		                  'register -1
-		                end
+		                board(i,j).part_scores_h(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
 		              next
 		            else
-		              if isWord(rack.tiles(k).face) then
-		                'register full score
-		              else
-		                'register -1
-		              end
+		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
 		            end
 		          next
 		        end

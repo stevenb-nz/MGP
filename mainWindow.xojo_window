@@ -327,28 +327,36 @@ End
 		            end
 		          next
 		        end
-		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
-		          board(i,j).partials_v = true
-		          redim board(i,j).part_scores_v(51)
-		          'work out part word & part score
-		          for k = 0 to ubound(rack.tiles)
-		            if rack.tiles(k).face = "?" then
-		              'work out full score
-		              for l = 97 to 122
-		                if isWord(chr(l)) then
-		                  'register full score
-		                else
-		                  'register -1
-		                end
-		              next
-		            else
-		              if isWord(rack.tiles(k).face) then
-		                'register full score
+		        if board(i,j).anchor then
+		          if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
+		            board(i,j).partials_v = true
+		            redim board(i,j).part_scores_v(51)
+		            wmult = board(i,j).wordmult
+		            word = "?"
+		            ptot = 0
+		            offset = -1
+		            while board(i,j+offset).face <> ""
+		              word = board(i,j+offset).face + word
+		              ptot = ptot + tile_value(board(i,j+offset).face)
+		              offset = offset - 1
+		            wend
+		            offset = 1
+		            while board(i,j+offset).face <> ""
+		              word = word + board(i,j+offset).face
+		              ptot = ptot + tile_value(board(i,j+offset).face)
+		              offset = offset + 1
+		            wend
+		            for k = 0 to ubound(rack.tiles)
+		              if rack.tiles(k).face = "?" then
+		                tot = ptot * wmult
+		                for l = 97 to 122
+		                  board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
+		                next
 		              else
-		                'register -1
+		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
 		              end
-		            end
-		          next
+		            next
+		          end
 		        end
 		      end
 		    next

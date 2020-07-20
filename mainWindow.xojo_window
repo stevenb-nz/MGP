@@ -291,7 +291,8 @@ End
 	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
-		  dim i,j,k,l as integer
+		  dim i,j,k,l,offset,ptot,wmult as integer
+		  dim word as string
 		  
 		  rack.import letters
 		  for i = 1 to 15
@@ -300,6 +301,11 @@ End
 		        if board(i-1,j).face <> "" or board(i+1,j).face <> "" then
 		          board(i,j).partials_h = true
 		          redim board(i,j).part_scores_h(51)
+		          wmult = board(i,j).wordmult
+		          word = "?"
+		          ptot = 0
+		          offset = -1
+		          
 		          'work out part word & part score
 		          for k = 0 to ubound(rack.tiles)
 		            if rack.tiles(k).face = "?" then

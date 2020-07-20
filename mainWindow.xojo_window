@@ -300,39 +300,52 @@ End
 		        if board(i-1,j).face <> "" or board(i+1,j).face <> "" then
 		          board(i,j).partials_h = true
 		          redim board(i,j).part_scores_h(51)
+		          'work out part word & part score
+		          for k = 0 to ubound(rack.tiles)
+		            if rack.tiles(k).face = "?" then
+		              'work out full score
+		              for l = 97 to 122
+		                if isWord(chr(l)) then
+		                  'register full score
+		                else
+		                  'register -1
+		                end
+		              next
+		            else
+		              if isWord(rack.tiles(k).face) then
+		                'register full score
+		              else
+		                'register -1
+		              end
+		            end
+		          next
 		        end
 		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
 		          board(i,j).partials_v = true
 		          redim board(i,j).part_scores_v(51)
+		          'work out part word & part score
+		          for k = 0 to ubound(rack.tiles)
+		            if rack.tiles(k).face = "?" then
+		              'work out full score
+		              for l = 97 to 122
+		                if isWord(chr(l)) then
+		                  'register full score
+		                else
+		                  'register -1
+		                end
+		              next
+		            else
+		              if isWord(rack.tiles(k).face) then
+		                'register full score
+		              else
+		                'register -1
+		              end
+		            end
+		          next
 		        end
-		        for k = 0 to ubound(rack.tiles)
-		          precompsquare(rack.tiles(k).face,i,j)
-		        next
 		      end
 		    next
 		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub precompsquare(tile as string, x as integer, y as integer)
-		  
-		  
-		  if board(x,y).partials_h then
-		    if tile = "?" then
-		      
-		    else
-		      
-		    end
-		  end
-		  if board(x,y).partials_v then
-		    if tile = "?" then
-		      
-		    else
-		      
-		    end
-		  end
 		  
 		End Sub
 	#tag EndMethod

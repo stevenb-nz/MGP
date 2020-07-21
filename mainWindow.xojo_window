@@ -320,8 +320,14 @@ End
 		            if rack.tiles(k).face = "?" then
 		              tot = ptot * wmult
 		              for l = 97 to 122
-		                board(i,j).part_scores_h(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
-		                'if isWord and not partials_v, process potential h play
+		                if isWord(word.Replace("?",chr(l))) then
+		                  board(i,j).part_scores_h(l-71) = tot
+		                  if not board(i,j).partials_v then
+		                    'process(location,word,score,leave)
+		                  end
+		                else
+		                  board(i,j).part_scores_h(l-71) = -1
+		                end
 		              next
 		            else
 		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)

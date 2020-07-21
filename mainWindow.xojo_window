@@ -321,9 +321,11 @@ End
 		              tot = ptot * wmult
 		              for l = 97 to 122
 		                board(i,j).part_scores_h(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
+		                'if isWord and not partials_v, process potential h play
 		              next
 		            else
 		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
+		              'if isWord and not partials_v, process potential h play
 		            end
 		          next
 		        end
@@ -351,9 +353,13 @@ End
 		                tot = ptot * wmult
 		                for l = 97 to 122
 		                  board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
+		                  'if isWord and not partials_h, process potential v play
+		                  'if isWord and partials_h and isWord(h), process potential h play
 		                next
 		              else
 		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
+		                'if isWord and not partials_h, process potential v play
+		                'if isWord and partials_h and isWord(h), process potential h play
 		              end
 		            next
 		          end
@@ -372,7 +378,9 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		    if lplay > 1 then
+		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
 		  end
 		  rack.import letters
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
@@ -459,7 +467,9 @@ End
 		        end
 		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		      if dagadag_endword(node) then
-		        process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		        if lplay > 1 then
+		          process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		        end
 		      end
 		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
 		        for i = 0 to UBound(rack.tiles)
@@ -537,7 +547,9 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		    if lplay > 1 then
+		      process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
 		  end
 		  rack.import letters
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
@@ -579,7 +591,9 @@ End
 		      end
 		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		    if dagadag_endword(node) then
-		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		      if lplay > 1 then
+		        process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		      end
 		    end
 		    if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
 		      for i = 0 to UBound(rack.tiles)

@@ -364,14 +364,32 @@ End
 		              if rack.tiles(k).face = "?" then
 		                tot = ptot * wmult
 		                for l = 97 to 122
-		                  board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
-		                  'if isWord and not partials_h, process potential v play
-		                  'if isWord and partials_h and isWord(h), process potential h play
+		                  if isWord(word.Replace("?",chr(l))) then
+		                    board(i,j).part_scores_v(l-71) = tot
+		                    if board(i,j).partials_h then
+		                      'if isWord(h-word.Replace("?",chr(l)))
+		                      'process(h-location,word,score,leave)
+		                      'end
+		                    else
+		                      'process(v-location,word,score,leave)
+		                    end
+		                  else
+		                    board(i,j).part_scores_v(l-71) = -1
+		                  end
 		                next
 		              else
-		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
-		                'if isWord and not partials_h, process potential v play
-		                'if isWord and partials_h and isWord(h), process potential h play
+		                if isWord(word.Replace("?",rack.tiles(k).face)) then
+		                  board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = (ptot+tile_value(board(i,j).face))*wmult
+		                  if board(i,j).partials_h then
+		                    'if isWord(h-word.Replace("?",rack.tiles(k).face)) then
+		                    'process(h-location,word,score,leave)
+		                    'end
+		                  else
+		                    'process(v-location,word,score,leave)
+		                  end
+		                else
+		                  board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = -1
+		                end
 		              end
 		            next
 		          end

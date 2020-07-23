@@ -655,7 +655,13 @@ End
 		    return true
 		  end
 		  if lplay = 1 then
-		    return true
+		    if horizontal then
+		      return true
+		    else
+		      if not board(x,y).partials_h then
+		        return true
+		      end
+		    end
 		  end
 		  return false
 		  

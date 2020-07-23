@@ -690,6 +690,10 @@ End
 		  if lplay > 1 then
 		    return true
 		  end
+		  if lplay = 1 then
+		    return true
+		  end
+		  return false
 		  
 		End Function
 	#tag EndMethod

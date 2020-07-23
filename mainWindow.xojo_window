@@ -408,7 +408,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    if lplay > 1 then
+		    if unique_play(lplay,x,y,horizontal) then
 		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		    end
 		  end
@@ -577,7 +577,7 @@ End
 		  dim rack as new Rack
 		  
 		  if dagadag_endword(node) then
-		    if lplay > 1 then
+		    if unique_play(lplay,x,y,horizontal) then
 		      process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		    end
 		  end
@@ -681,6 +681,15 @@ End
 		  end
 		  
 		  return return_value
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function unique_play(lplay as integer, x as integer, y as integer, horizontal as Boolean) As boolean
+		  if lplay > 1 then
+		    return true
+		  end
 		  
 		End Function
 	#tag EndMethod

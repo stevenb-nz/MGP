@@ -320,24 +320,10 @@ End
 		            if rack.tiles(k).face = "?" then
 		              tot = ptot * wmult
 		              for l = 97 to 122
-		                if isWord(word.Replace("?",chr(l))) then
-		                  board(i,j).part_scores_h(l-71) = tot
-		                  if not board(i,j).partials_v then
-		                    'process(location,word,score,leave)
-		                  end
-		                else
-		                  board(i,j).part_scores_h(l-71) = -1
-		                end
+		                board(i,j).part_scores_h(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
 		              next
 		            else
-		              if isWord(word.Replace("?",rack.tiles(k).face)) then
-		                board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = (ptot+tile_value(board(i,j).face))*wmult
-		                if not board(i,j).partials_v then
-		                  'process(location,word,score,leave)
-		                end
-		              else
-		                board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = -1
-		              end
+		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
 		            end
 		          next
 		        end
@@ -364,32 +350,10 @@ End
 		              if rack.tiles(k).face = "?" then
 		                tot = ptot * wmult
 		                for l = 97 to 122
-		                  if isWord(word.Replace("?",chr(l))) then
-		                    board(i,j).part_scores_v(l-71) = tot
-		                    if board(i,j).partials_h then
-		                      'if isWord(h-word.Replace("?",chr(l)))
-		                      'process(h-location,word,score,leave)
-		                      'end
-		                    else
-		                      'process(v-location,word,score,leave)
-		                    end
-		                  else
-		                    board(i,j).part_scores_v(l-71) = -1
-		                  end
+		                  board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
 		                next
 		              else
-		                if isWord(word.Replace("?",rack.tiles(k).face)) then
-		                  board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = (ptot+tile_value(board(i,j).face))*wmult
-		                  if board(i,j).partials_h then
-		                    'if isWord(h-word.Replace("?",rack.tiles(k).face)) then
-		                    'process(h-location,word,score,leave)
-		                    'end
-		                  else
-		                    'process(v-location,word,score,leave)
-		                  end
-		                else
-		                  board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = -1
-		                end
+		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
 		              end
 		            next
 		          end

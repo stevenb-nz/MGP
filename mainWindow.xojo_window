@@ -461,7 +461,7 @@ End
 		        end
 		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		      if dagadag_endword(node) then
-		        if lplay > 1 then
+		        if unique_play(lplay,x,y,horizontal) then
 		          process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		        end
 		      end
@@ -585,7 +585,7 @@ End
 		      end
 		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		    if dagadag_endword(node) then
-		      if lplay > 1 then
+		      if unique_play(lplay,x,y,horizontal) then
 		        process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		      end
 		    end

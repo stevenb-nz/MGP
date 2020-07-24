@@ -386,9 +386,19 @@ End
 		              nextnode = dagadag_nextnode(node,chr(j))
 		              if nextnode <> 0 then
 		                if horizontal then
-		                  prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult)
+		                  if board.partials_v then
+		                    'check if possible
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult)
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult)
+		                  end
 		                else
-		                  prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult)
+		                  if board.partials_h then
+		                    'check if possible
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult)
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult)
+		                  end
 		                end
 		              end
 		            next

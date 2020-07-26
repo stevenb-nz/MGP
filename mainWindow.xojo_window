@@ -387,15 +387,19 @@ End
 		              if nextnode <> 0 then
 		                if horizontal then
 		                  if board(x+offset,y).partials_v then
-		                    'check if possible, add cross-total to psum
-		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
 		                  else
 		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
 		                  if board(x,y+offset).partials_h then
-		                    'check if possible
-		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
 		                  else
 		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                  end

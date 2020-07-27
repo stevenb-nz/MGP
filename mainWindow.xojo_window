@@ -413,6 +413,7 @@ End
 		              if horizontal then
 		                if
 		                  if
+		                    psum = psum + 
 		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
@@ -421,6 +422,7 @@ End
 		              else
 		                if
 		                  if
+		                    psum = psum + 
 		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -458,6 +460,7 @@ End
 		                if horizontal then
 		                  if
 		                    if
+		                      psum = psum + 
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                    end
 		                  else
@@ -466,6 +469,7 @@ End
 		                else
 		                  if
 		                    if
+		                      psum = psum + 
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                    end
 		                  else
@@ -481,6 +485,7 @@ End
 		              if horizontal then
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
@@ -489,6 +494,7 @@ End
 		              else
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -524,6 +530,7 @@ End
 		                if horizontal then
 		                  if
 		                    if
+		                      psum = psum + 
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                    end
 		                  else
@@ -532,6 +539,7 @@ End
 		                else
 		                  if
 		                    if
+		                      psum = psum + 
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                    end
 		                  else
@@ -547,6 +555,7 @@ End
 		              if horizontal then
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
@@ -555,6 +564,7 @@ End
 		              else
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -630,6 +640,7 @@ End
 		              if horizontal then
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
@@ -638,6 +649,7 @@ End
 		              else
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -653,6 +665,7 @@ End
 		            if horizontal then
 		              if
 		                if
+		                  psum = psum + 
 		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
@@ -661,6 +674,7 @@ End
 		            else
 		              if
 		                if
+		                  psum = psum + 
 		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              else
@@ -696,6 +710,7 @@ End
 		              if horizontal then
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
@@ -704,6 +719,7 @@ End
 		              else
 		                if
 		                  if
+		                    psum = psum + 
 		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -719,6 +735,7 @@ End
 		            if horizontal then
 		              if
 		                if
+		                  psum = psum + 
 		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
@@ -727,6 +744,7 @@ End
 		            else
 		              if
 		                if
+		                  psum = psum + 
 		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              else

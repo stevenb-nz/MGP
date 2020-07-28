@@ -511,7 +511,7 @@ End
 		        nextnode = dagadag_nextnode(node,tile)
 		        if nextnode <> 0 then
 		          node = nextnode
-		          word = tile + word
+		          word = word + tile
 		          pvalue = pvalue + tile_value(tile)
 		          offset = offset + 1
 		        end
@@ -817,6 +817,10 @@ End
 		board(16,16) As Square
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		racksize As Integer = 7
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
@@ -838,12 +842,12 @@ End
 		  listbox1.DeleteAllRows
 		  bagcount = UBound(bag)+1
 		  if bagcount > 0 then
-		    if bagcount > 2 then
-		      bagcount = 2
+		    if bagcount > racksize then
+		      bagcount = racksize
 		    end
 		  else
 		    initbag
-		    bagcount = 2
+		    bagcount = racksize
 		  end
 		  for i = 1 to bagcount
 		    letters = letters + bag.Pop

@@ -862,7 +862,7 @@ End
 		  do_move(letters)
 		  Listbox1.SortedColumn = 1
 		  Listbox1.Sort
-		  listbox1.Heading(1) = str(ListBox1.ListCount)
+		  listbox1.Heading(0) = str(ListBox1.ListCount)
 		  
 		End Sub
 	#tag EndEvent
@@ -1114,5 +1114,11 @@ End
 		InitialValue="True"
 		Type="Boolean"
 		EditorType="Boolean"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="racksize"
+		Group="Behavior"
+		InitialValue="7"
+		Type="Integer"
 	#tag EndViewProperty
 #tag EndViewBehavior

@@ -411,18 +411,18 @@ End
 		            if nextnode <> 0 then
 		              tile = rack.tiles(i).face
 		              if horizontal then
-		                if
-		                  if
-		                    psum = psum + 
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
 		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
 		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
-		                if
-		                  if
-		                    psum = psum + 
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
 		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -458,18 +458,18 @@ End
 		              nextnode = dagadag_nextnode(node,chr(j))
 		              if nextnode <> 0 then
 		                if horizontal then
-		                  if
-		                    if
-		                      psum = psum + 
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                    end
 		                  else
 		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
-		                  if
-		                    if
-		                      psum = psum + 
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                    end
 		                  else
@@ -483,18 +483,18 @@ End
 		            if nextnode <> 0 then
 		              tile = rack.tiles(i).face
 		              if horizontal then
-		                if
-		                  if
-		                    psum = psum + 
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
 		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
-		                if
-		                  if
-		                    psum = psum + 
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
@@ -528,18 +528,18 @@ End
 		              nextnode = dagadag_nextnode(node,chr(j))
 		              if nextnode <> 0 then
 		                if horizontal then
-		                  if
-		                    if
-		                      psum = psum + 
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                    end
 		                  else
 		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
-		                  if
-		                    if
-		                      psum = psum + 
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
 		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                    end
 		                  else
@@ -553,18 +553,18 @@ End
 		            if nextnode <> 0 then
 		              tile = rack.tiles(i).face
 		              if horizontal then
-		                if
-		                  if
-		                    psum = psum + 
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
 		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
-		                if
-		                  if
-		                    psum = psum + 
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
 		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else

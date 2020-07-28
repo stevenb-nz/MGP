@@ -97,7 +97,7 @@ Begin Window mainWindow
       Border          =   True
       ColumnCount     =   4
       ColumnsResizable=   False
-      ColumnWidths    =   "15%,35%,15%,35%"
+      ColumnWidths    =   "35%,15%,15%,35%"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
@@ -583,8 +583,8 @@ End
 
 	#tag Method, Flags = &h0
 		Sub process(location as string, word as String, score as integer, leave as String)
-		  Listbox1.AddRow location
-		  listbox1.Cell(Listbox1.LastIndex,1) = word
+		  Listbox1.AddRow word
+		  listbox1.Cell(Listbox1.LastIndex,1) = location
 		  listbox1.Cell(Listbox1.LastIndex,2) = str(score)
 		  listbox1.Cell(Listbox1.LastIndex,3) = leave
 		  
@@ -838,16 +838,20 @@ End
 		  listbox1.DeleteAllRows
 		  bagcount = UBound(bag)+1
 		  if bagcount > 0 then
-		    if bagcount > 7 then
-		      bagcount = 7
+		    if bagcount > 2 then
+		      bagcount = 2
 		    end
 		  else
 		    initbag
-		    bagcount = 7
+		    bagcount = 2
 		  end
 		  for i = 1 to bagcount
 		    letters = letters + bag.Pop
 		  next
+		  board(8,8).face = bag.pop
+		  if board(8,8).face = "?" then
+		    board(8,8).face = "a"
+		  end
 		  temp = split(letters,"")
 		  temp.Sort
 		  letters = join(temp,"")

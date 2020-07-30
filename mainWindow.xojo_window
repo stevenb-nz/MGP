@@ -375,7 +375,7 @@ End
 		                board(i,j).part_scores_h(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
 		              next
 		            else
-		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
+		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face)*board(i,j).lettermult)*wmult,-1)
 		            end
 		          next
 		        end
@@ -405,7 +405,7 @@ End
 		                  board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
 		                next
 		              else
-		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face))*wmult,-1)
+		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face)*board(i,j).lettermult)*wmult,-1)
 		              end
 		            next
 		          end
@@ -870,7 +870,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 7
+		racksize As Integer = 2
 	#tag EndProperty
 
 

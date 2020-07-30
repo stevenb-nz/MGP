@@ -386,36 +386,34 @@ End
 		            end
 		          next
 		        end
-		        if board(i,j).anchor then
-		          if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
-		            board(i,j).partials_v = true
-		            redim board(i,j).part_scores_v(51)
-		            wmult = board(i,j).wordmult
-		            word = "?"
-		            ptot = 0
-		            offset = -1
-		            while board(i,j+offset).face <> ""
-		              word = board(i,j+offset).face + word
-		              ptot = ptot + tile_value(board(i,j+offset).face)
-		              offset = offset - 1
-		            wend
-		            offset = 1
-		            while board(i,j+offset).face <> ""
-		              word = word + board(i,j+offset).face
-		              ptot = ptot + tile_value(board(i,j+offset).face)
-		              offset = offset + 1
-		            wend
-		            for k = 0 to ubound(rack.tiles)
-		              if rack.tiles(k).face = "?" then
-		                tot = ptot * wmult
-		                for l = 97 to 122
-		                  board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
-		                next
-		              else
-		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face)*board(i,j).lettermult)*wmult,-1)
-		              end
-		            next
-		          end
+		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
+		          board(i,j).partials_v = true
+		          redim board(i,j).part_scores_v(51)
+		          wmult = board(i,j).wordmult
+		          word = "?"
+		          ptot = 0
+		          offset = -1
+		          while board(i,j+offset).face <> ""
+		            word = board(i,j+offset).face + word
+		            ptot = ptot + tile_value(board(i,j+offset).face)
+		            offset = offset - 1
+		          wend
+		          offset = 1
+		          while board(i,j+offset).face <> ""
+		            word = word + board(i,j+offset).face
+		            ptot = ptot + tile_value(board(i,j+offset).face)
+		            offset = offset + 1
+		          wend
+		          for k = 0 to ubound(rack.tiles)
+		            if rack.tiles(k).face = "?" then
+		              tot = ptot * wmult
+		              for l = 97 to 122
+		                board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
+		              next
+		            else
+		              board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face)*board(i,j).lettermult)*wmult,-1)
+		            end
+		          next
 		        end
 		      end
 		    next

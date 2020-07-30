@@ -243,6 +243,13 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function h_rc(x as integer, y as integer) As String
+		  return str(y)+chr(x+64)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub initbag()
 		  dim s as string
 		  dim i as integer
@@ -750,7 +757,7 @@ End
 		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		    if dagadag_endword(node) then
 		      if unique_play(lplay,x,y,horizontal) then
-		        process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		        process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
 		      end
 		    end
 		    if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
@@ -856,6 +863,13 @@ End
 		    end
 		  end
 		  return false
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function v_cr(x as integer, y as integer) As String
+		  return chr(x+64)+str(y)
 		  
 		End Function
 	#tag EndMethod

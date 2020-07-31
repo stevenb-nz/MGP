@@ -351,14 +351,14 @@ End
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
 		  dim i,j,k,l,offset,ptot,tot,wmult as integer
-		  dim word as string
+		  dim word,newrow as string
 		  
 		  rack.import letters
 		  for i = 1 to 15
 		    for j = 1 to 15
 		      if board(i,j).anchor then
 		        if board(i-1,j).face <> "" or board(i+1,j).face <> "" then
-		          Listbox2.AddRow h_rc(i,j)
+		          newrow = h_rc(i,j)
 		          board(i,j).partials_h = true
 		          redim board(i,j).part_scores_h(51)
 		          wmult = board(i,j).wordmult
@@ -386,9 +386,10 @@ End
 		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face)*board(i,j).lettermult)*wmult,-1)
 		            end
 		          next
+		          listbox2.AddRow newrow
 		        end
 		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
-		          Listbox2.AddRow v_cr(i,j)
+		          newrow = v_cr(i,j)
 		          board(i,j).partials_v = true
 		          redim board(i,j).part_scores_v(51)
 		          wmult = board(i,j).wordmult
@@ -416,6 +417,7 @@ End
 		              board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(board(i,j).face)*board(i,j).lettermult)*wmult,-1)
 		            end
 		          next
+		          listbox2.AddRow newrow
 		        end
 		      end
 		    next
@@ -432,7 +434,7 @@ End
 		  
 		  if dagadag_endword(node) then
 		    if unique_play(lplay,x,y,horizontal) then
-		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		    end
 		  end
 		  rack.import letters
@@ -577,7 +579,7 @@ End
 		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		      if dagadag_endword(node) then
 		        if unique_play(lplay,x,y,horizontal) then
-		          process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		          process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		        end
 		      end
 		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
@@ -685,7 +687,7 @@ End
 		  
 		  if dagadag_endword(node) then
 		    if unique_play(lplay,x,y,horizontal) then
-		      process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		      process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		    end
 		  end
 		  rack.import letters
@@ -757,7 +759,7 @@ End
 		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		    if dagadag_endword(node) then
 		      if unique_play(lplay,x,y,horizontal) then
-		        process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,pvalue*pmult+if(lplay=7,50,0),letters)
+		        process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		      end
 		    end
 		    if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
@@ -906,6 +908,7 @@ End
 		  dim bagcount,i as integer
 		  
 		  listbox1.DeleteAllRows
+		  listbox2.DeleteAllRows
 		  bagcount = UBound(bag)+1
 		  if bagcount > 0 then
 		    if bagcount > racksize then
@@ -922,9 +925,9 @@ End
 		  if board(8,8).face = "?" then
 		    board(8,8).face = "a"
 		  end
-		  board(9,9).face = bag.pop
-		  if board(9,9).face = "?" then
-		    board(9,9).face = "a"
+		  board(8,9).face = bag.pop
+		  if board(8,9).face = "?" then
+		    board(8,9).face = "a"
 		  end
 		  temp = split(letters,"")
 		  temp.Sort

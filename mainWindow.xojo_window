@@ -228,10 +228,10 @@ End
 		        end
 		      next
 		    next
+		    precomp(letters,i,j)
 		    for i = 1 to 15
 		      for j = 1 to 15
 		        if board(i,j).anchor then
-		          precomp(letters,i,j)
 		          startwords(letters,i,j,true)
 		          startwords(letters,i,j,false)
 		        end
@@ -358,6 +358,7 @@ End
 		    for j = 1 to 15
 		      if board(i,j).anchor then
 		        if board(i-1,j).face <> "" or board(i+1,j).face <> "" then
+		          Listbox2.AddRow h_rc(i,j)
 		          board(i,j).partials_h = true
 		          redim board(i,j).part_scores_h(51)
 		          wmult = board(i,j).wordmult
@@ -387,6 +388,7 @@ End
 		          next
 		        end
 		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
+		          Listbox2.AddRow v_cr(i,j)
 		          board(i,j).partials_v = true
 		          redim board(i,j).part_scores_v(51)
 		          wmult = board(i,j).wordmult
@@ -882,7 +884,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 2
+		racksize As Integer = 7
 	#tag EndProperty
 
 
@@ -919,6 +921,10 @@ End
 		  board(8,8).face = bag.pop
 		  if board(8,8).face = "?" then
 		    board(8,8).face = "a"
+		  end
+		  board(9,9).face = bag.pop
+		  if board(9,9).face = "?" then
+		    board(9,9).face = "a"
 		  end
 		  temp = split(letters,"")
 		  temp.Sort

@@ -383,10 +383,14 @@ End
 		            if rack.tiles(k).face = "?" then
 		              tot = ptot * wmult
 		              for l = 97 to 122
-		                board(i,j).part_scores_h(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
+		                if isWord(word.Replace("?",chr(l))) then
+		                  board(i,j).part_scores_h(l-71) = tot
+		                end
 		              next
 		            else
-		              board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(rack.tiles(k).face)*board(i,j).lettermult)*wmult,-1)
+		              if isWord(word.Replace("?",rack.tiles(k).face)) then
+		                board(i,j).part_scores_h(asc(rack.tiles(k).face)-65) = (ptot+tile_value(rack.tiles(k).face)*board(i,j).lettermult)*wmult
+		              end
 		            end
 		          next
 		          for k = 0 to 25
@@ -425,10 +429,14 @@ End
 		            if rack.tiles(k).face = "?" then
 		              tot = ptot * wmult
 		              for l = 97 to 122
-		                board(i,j).part_scores_v(l-71) = if(isWord(word.Replace("?",chr(l))),tot,-1)
+		                if isWord(word.Replace("?",chr(l))) then
+		                  board(i,j).part_scores_v(l-71) = tot
+		                end
 		              next
 		            else
-		              board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = if(isWord(word.Replace("?",rack.tiles(k).face)),(ptot+tile_value(rack.tiles(k).face)*board(i,j).lettermult)*wmult,-1)
+		              if isWord(word.Replace("?",rack.tiles(k).face)) then
+		                board(i,j).part_scores_v(asc(rack.tiles(k).face)-65) = (ptot+tile_value(rack.tiles(k).face)*board(i,j).lettermult)*wmult
+		              end
 		            end
 		          next
 		          for k = 0 to 25
@@ -927,10 +935,11 @@ End
 		Sub Action()
 		  dim letters as string
 		  dim temp() as string
-		  dim bagcount,i as integer
+		  dim i as integer
 		  
 		  listbox1.DeleteAllRows
 		  listbox2.DeleteAllRows
+		  initbag
 		  board(8,8).face = bag.pop
 		  if board(8,8).face = "?" then
 		    board(8,8).face = "a"
@@ -941,16 +950,7 @@ End
 		    board(8,9).face = "a"
 		  end
 		  listbox2.addrow "H9 - " + board(8,9).face
-		  bagcount = UBound(bag)+1
-		  if bagcount > 0 then
-		    if bagcount > racksize then
-		      bagcount = racksize
-		    end
-		  else
-		    initbag
-		    bagcount = racksize
-		  end
-		  for i = 1 to bagcount
+		  for i = 1 to racksize
 		    letters = letters + bag.Pop
 		  next
 		  temp = split(letters,"")

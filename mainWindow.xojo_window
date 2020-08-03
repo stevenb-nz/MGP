@@ -705,17 +705,50 @@ End
 		      for j = 97 to 122
 		        node = dagadag_nextnode(0,chr(j))
 		        if node <> 0 then
-		          prefix(letters.Replace(rack.tiles(i).face,""),1,chr(j),node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
+		          if horizontal then
+		            if board(x,y).partials_v then
+		              if board(x,y).part_scores_v(j-71) > -1 then
+		                prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,board(x,y).part_scores_v(j-71))
+		              end
+		            else
+		              prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
+		            end
+		          else
+		            if board(x,y).partials_h then
+		              if board(x,y).part_scores_h(j-71) > -1 then
+		                prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,board(x,y).part_scores_h(j-71))
+		              end
+		            else
+		              prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
+		            end
+		          end
 		        end
 		      next
 		    else
 		      node = dagadag_nextnode(0,rack.tiles(i).face)
 		      if node <> 0 then
 		        tile = rack.tiles(i).face
-		        prefix(letters.Replace(tile,""),1,tile,node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
+		        if horizontal then
+		          if board(x,y).partials_v then
+		            if board(x,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		              prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,board(x,y).part_scores_v(asc(rack.tiles(i).face)-65))
+		            end
+		          else
+		            prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
+		          end
+		        else
+		          if board(x,y).partials_h then
+		            if board(x,y).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		              prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,board(x,y).part_scores_h(asc(rack.tiles(i).face)-65))
+		            end
+		          else
+		            prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
+		          end
+		        end
 		      end
 		    end
 		  next
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -927,7 +960,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 7
+		racksize As Integer = 1
 	#tag EndProperty
 
 

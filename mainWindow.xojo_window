@@ -673,6 +673,17 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub preset_square(x as integer, y as integer)
+		  board(x,y).face = bag.pop
+		  if board(x,y).face = "?" then
+		    board(x,y).face = "a"
+		  end
+		  listbox2.addrow h_rc(x,y)+" - " + board(x,y).face
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub process(location as string, word as String, score as integer, leave as String)
 		  Listbox1.AddRow word
 		  listbox1.Cell(Listbox1.LastIndex,1) = location
@@ -940,16 +951,11 @@ End
 		  listbox1.DeleteAllRows
 		  listbox2.DeleteAllRows
 		  initbag
-		  board(8,8).face = bag.pop
-		  if board(8,8).face = "?" then
-		    board(8,8).face = "a"
-		  end
-		  listbox2.addrow "H8 - " + board(8,8).face
-		  board(8,9).face = bag.pop
-		  if board(8,9).face = "?" then
-		    board(8,9).face = "a"
-		  end
-		  listbox2.addrow "H9 - " + board(8,9).face
+		  preset_square(8,7)
+		  preset_square(7,8)
+		  preset_square(8,8)
+		  preset_square(9,8)
+		  preset_square(8,9)
 		  for i = 1 to racksize
 		    letters = letters + bag.Pop
 		  next

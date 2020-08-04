@@ -531,7 +531,7 @@ End
 		      nextnode = dagadag_nextnode(node,tile)
 		      if nextnode <> 0 then
 		        node = nextnode
-		        word = tile + word
+		        word = "("+tile+")" + word
 		        pvalue = pvalue + tile_value(tile)
 		        offset = offset - 1
 		      end
@@ -602,7 +602,7 @@ End
 		        nextnode = dagadag_nextnode(node,tile)
 		        if nextnode <> 0 then
 		          node = nextnode
-		          word = word + tile
+		          word = word + "("+tile+")"
 		          pvalue = pvalue + tile_value(tile)
 		          offset = offset + 1
 		        end
@@ -676,7 +676,7 @@ End
 		Sub preset_square(x as integer, y as integer)
 		  board(x,y).face = bag.pop
 		  if board(x,y).face = "?" then
-		    board(x,y).face = "a"
+		    board(x,y).face = chr(floor(rnd*26)+97)
 		  end
 		  listbox2.addrow h_rc(x,y)+" - " + board(x,y).face
 		  
@@ -826,7 +826,7 @@ End
 		      nextnode = dagadag_nextnode(node,tile)
 		      if nextnode <> 0 then
 		        node = nextnode
-		        word = tile + word
+		        word = "("+tile+")" + word
 		        pvalue = pvalue + tile_value(tile)
 		        offset = offset + 1
 		      end
@@ -960,7 +960,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 1
+		racksize As Integer = 7
 	#tag EndProperty
 
 

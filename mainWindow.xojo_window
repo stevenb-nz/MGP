@@ -464,7 +464,7 @@ End
 		  
 		  if dagadag_endword(node) then
 		    if unique_play(lplay,x,y,horizontal) then
-		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		      process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1))+"-"+if(horizontal,h_rc(x,y),v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		    end
 		  end
 		  rack.import letters
@@ -609,7 +609,7 @@ End
 		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		      if dagadag_endword(node) then
 		        if unique_play(lplay,x,y,horizontal) then
-		          process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		          process(if(horizontal,str(x)+chr(y+offset+65),chr(y+64)+str(x+offset+1))+"-"+if(horizontal,h_rc(x,y),v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		        end
 		      end
 		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
@@ -761,7 +761,7 @@ End
 		  
 		  if dagadag_endword(node) then
 		    if unique_play(lplay,x,y,horizontal) then
-		      process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		      process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1))+"-"+if(horizontal,h_rc(x,y),v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		    end
 		  end
 		  rack.import letters
@@ -833,7 +833,7 @@ End
 		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		    if dagadag_endword(node) then
 		      if unique_play(lplay,x,y,horizontal) then
-		        process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		        process(if(horizontal,str(x)+chr(y+lmost+65),chr(y+64)+str(x+lmost+1))+"-"+if(horizontal,h_rc(x,y),v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
 		      end
 		    end
 		    if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then

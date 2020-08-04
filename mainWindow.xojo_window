@@ -9,7 +9,7 @@ Begin Window mainWindow
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   800
+   Height          =   734
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
@@ -25,7 +25,7 @@ Begin Window mainWindow
    Resizeable      =   True
    Title           =   "Multi-game Player"
    Visible         =   True
-   Width           =   600
+   Width           =   1102
    Begin PushButton dagadagButton
       AutoDeactivate  =   True
       Bold            =   False
@@ -52,7 +52,7 @@ Begin Window mainWindow
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   760
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -71,7 +71,7 @@ Begin Window mainWindow
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   640
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -108,14 +108,14 @@ Begin Window mainWindow
       GridLinesVertical=   0
       HasHeading      =   True
       HeadingIndex    =   -1
-      Height          =   760
+      Height          =   694
       HelpTag         =   ""
       Hierarchical    =   False
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   280
+      Left            =   732
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -138,7 +138,7 @@ Begin Window mainWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   300
+      Width           =   350
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
@@ -160,7 +160,7 @@ Begin Window mainWindow
       GridLinesVertical=   0
       HasHeading      =   False
       HeadingIndex    =   -1
-      Height          =   696
+      Height          =   662
       HelpTag         =   ""
       Hierarchical    =   False
       Index           =   -2147483648
@@ -190,7 +190,7 @@ Begin Window mainWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   248
+      Width           =   700
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End

@@ -348,6 +348,224 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub old_prefix(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,nextnode,lmost as integer
+		  dim rack as new Rack
+		  
+		  if dagadag_endword(node) then
+		    if unique_play(lplay,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
+		  end
+		  rack.import letters
+		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
+		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    end
+		  else
+		    do
+		      tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		      nextnode = dagadag_nextnode(node,tile)
+		      if nextnode <> 0 then
+		        node = nextnode
+		        word = "("+tile+")" + word
+		        pvalue = pvalue + tile_value(tile)
+		        offset = offset - 1
+		      end
+		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		  end
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    else
+		      do
+		        tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		        nextnode = dagadag_nextnode(node,tile)
+		        if nextnode <> 0 then
+		          node = nextnode
+		          word = word + "("+tile+")"
+		          pvalue = pvalue + tile_value(tile)
+		          offset = offset + 1
+		        end
+		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		      if nextnode <> 0 then
+		        if dagadag_endword(node) then
+		          if unique_play(lplay,x,y,horizontal) then
+		            process(if(horizontal,h_rc(x+lmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+lmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		          end
+		        end
+		        if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		          for i = 0 to UBound(rack.tiles)
+		            if rack.tiles(i).face = "?" then
+		              for j = 97 to 122
+		                nextnode = dagadag_nextnode(node,chr(j))
+		                if nextnode <> 0 then
+		                  if horizontal then
+		                    if board(x+offset,y).partials_v then
+		                      if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                        psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    if board(x,y+offset).partials_h then
+		                      if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                        psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  end
+		                end
+		              next
+		            else
+		              nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		              if nextnode <> 0 then
+		                tile = rack.tiles(i).face
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            end
+		          next
+		        end
+		      end
+		    end
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
 		  dim i,j,k,l,offset,ptot,tot,wmult as integer
@@ -458,6 +676,878 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,nextnode,lmost as integer
+		  dim rack as new Rack
+		  
+		  if dagadag_endword(node) then
+		    if unique_play(lplay,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
+		  end
+		  rack.import letters
+		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
+		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    end
+		  else
+		    do
+		      tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		      nextnode = dagadag_nextnode(node,tile)
+		      if nextnode <> 0 then
+		        node = nextnode
+		        word = "("+tile+")" + word
+		        pvalue = pvalue + tile_value(tile)
+		        offset = offset - 1
+		      end
+		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		  end
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    else
+		      do
+		        tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		        nextnode = dagadag_nextnode(node,tile)
+		        if nextnode <> 0 then
+		          node = nextnode
+		          word = word + "("+tile+")"
+		          pvalue = pvalue + tile_value(tile)
+		          offset = offset + 1
+		        end
+		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		      if nextnode <> 0 then
+		        if dagadag_endword(node) then
+		          if unique_play(lplay,x,y,horizontal) then
+		            process(if(horizontal,h_rc(x+lmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+lmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		          end
+		        end
+		        if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		          for i = 0 to UBound(rack.tiles)
+		            if rack.tiles(i).face = "?" then
+		              for j = 97 to 122
+		                nextnode = dagadag_nextnode(node,chr(j))
+		                if nextnode <> 0 then
+		                  if horizontal then
+		                    if board(x+offset,y).partials_v then
+		                      if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                        psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    if board(x,y+offset).partials_h then
+		                      if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                        psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  end
+		                end
+		              next
+		            else
+		              nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		              if nextnode <> 0 then
+		                tile = rack.tiles(i).face
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            end
+		          next
+		        end
+		      end
+		    end
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub prefix_ff(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,nextnode,lmost as integer
+		  dim rack as new Rack
+		  
+		  if dagadag_endword(node) then
+		    if unique_play(lplay,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
+		  end
+		  rack.import letters
+		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
+		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    end
+		  else
+		    do
+		      tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		      nextnode = dagadag_nextnode(node,tile)
+		      if nextnode <> 0 then
+		        node = nextnode
+		        word = "("+tile+")" + word
+		        pvalue = pvalue + tile_value(tile)
+		        offset = offset - 1
+		      end
+		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		  end
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    else
+		      do
+		        tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		        nextnode = dagadag_nextnode(node,tile)
+		        if nextnode <> 0 then
+		          node = nextnode
+		          word = word + "("+tile+")"
+		          pvalue = pvalue + tile_value(tile)
+		          offset = offset + 1
+		        end
+		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		      if nextnode <> 0 then
+		        if dagadag_endword(node) then
+		          if unique_play(lplay,x,y,horizontal) then
+		            process(if(horizontal,h_rc(x+lmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+lmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		          end
+		        end
+		        if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		          for i = 0 to UBound(rack.tiles)
+		            if rack.tiles(i).face = "?" then
+		              for j = 97 to 122
+		                nextnode = dagadag_nextnode(node,chr(j))
+		                if nextnode <> 0 then
+		                  if horizontal then
+		                    if board(x+offset,y).partials_v then
+		                      if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                        psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    if board(x,y+offset).partials_h then
+		                      if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                        psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  end
+		                end
+		              next
+		            else
+		              nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		              if nextnode <> 0 then
+		                tile = rack.tiles(i).face
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            end
+		          next
+		        end
+		      end
+		    end
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub prefix_ft(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,nextnode,lmost as integer
+		  dim rack as new Rack
+		  
+		  if dagadag_endword(node) then
+		    if unique_play(lplay,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
+		  end
+		  rack.import letters
+		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
+		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    end
+		  else
+		    do
+		      tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		      nextnode = dagadag_nextnode(node,tile)
+		      if nextnode <> 0 then
+		        node = nextnode
+		        word = "("+tile+")" + word
+		        pvalue = pvalue + tile_value(tile)
+		        offset = offset - 1
+		      end
+		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		  end
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    else
+		      do
+		        tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		        nextnode = dagadag_nextnode(node,tile)
+		        if nextnode <> 0 then
+		          node = nextnode
+		          word = word + "("+tile+")"
+		          pvalue = pvalue + tile_value(tile)
+		          offset = offset + 1
+		        end
+		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		      if nextnode <> 0 then
+		        if dagadag_endword(node) then
+		          if unique_play(lplay,x,y,horizontal) then
+		            process(if(horizontal,h_rc(x+lmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+lmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		          end
+		        end
+		        if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		          for i = 0 to UBound(rack.tiles)
+		            if rack.tiles(i).face = "?" then
+		              for j = 97 to 122
+		                nextnode = dagadag_nextnode(node,chr(j))
+		                if nextnode <> 0 then
+		                  if horizontal then
+		                    if board(x+offset,y).partials_v then
+		                      if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                        psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    if board(x,y+offset).partials_h then
+		                      if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                        psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  end
+		                end
+		              next
+		            else
+		              nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		              if nextnode <> 0 then
+		                tile = rack.tiles(i).face
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            end
+		          next
+		        end
+		      end
+		    end
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub prefix_tf(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,nextnode,lmost as integer
+		  dim rack as new Rack
+		  
+		  if dagadag_endword(node) then
+		    if unique_play(lplay,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		    end
+		  end
+		  rack.import letters
+		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
+		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    prefix(letters.Replace(rack.tiles(i).face,""),lplay+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  prefix(letters.Replace(tile,""),lplay+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    end
+		  else
+		    do
+		      tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		      nextnode = dagadag_nextnode(node,tile)
+		      if nextnode <> 0 then
+		        node = nextnode
+		        word = "("+tile+")" + word
+		        pvalue = pvalue + tile_value(tile)
+		        offset = offset - 1
+		      end
+		    loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		  end
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
+		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		        for i = 0 to UBound(rack.tiles)
+		          if rack.tiles(i).face = "?" then
+		            for j = 97 to 122
+		              nextnode = dagadag_nextnode(node,chr(j))
+		              if nextnode <> 0 then
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            next
+		          else
+		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		            if nextnode <> 0 then
+		              tile = rack.tiles(i).face
+		              if horizontal then
+		                if board(x+offset,y).partials_v then
+		                  if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                end
+		              else
+		                if board(x,y+offset).partials_h then
+		                  if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                    psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                else
+		                  suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                end
+		              end
+		            end
+		          end
+		        next
+		      end
+		    else
+		      do
+		        tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		        nextnode = dagadag_nextnode(node,tile)
+		        if nextnode <> 0 then
+		          node = nextnode
+		          word = word + "("+tile+")"
+		          pvalue = pvalue + tile_value(tile)
+		          offset = offset + 1
+		        end
+		      loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
+		      if nextnode <> 0 then
+		        if dagadag_endword(node) then
+		          if unique_play(lplay,x,y,horizontal) then
+		            process(if(horizontal,h_rc(x+lmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+lmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(lplay=7,50,0),letters)
+		          end
+		        end
+		        if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
+		          for i = 0 to UBound(rack.tiles)
+		            if rack.tiles(i).face = "?" then
+		              for j = 97 to 122
+		                nextnode = dagadag_nextnode(node,chr(j))
+		                if nextnode <> 0 then
+		                  if horizontal then
+		                    if board(x+offset,y).partials_v then
+		                      if board(x+offset,y).part_scores_v(j-71) > -1 then
+		                        psum = psum + board(x+offset,y).part_scores_v(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    if board(x,y+offset).partials_h then
+		                      if board(x,y+offset).part_scores_h(j-71) > -1 then
+		                        psum = psum + board(x,y+offset).part_scores_h(j-71)
+		                        suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                      end
+		                    else
+		                      suffix(letters.Replace(rack.tiles(i).face,""),lplay+1,word+chr(j),nextnode,x,y,horizontal,offset+1,lmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  end
+		                end
+		              next
+		            else
+		              nextnode = dagadag_nextnode(node,rack.tiles(i).face)
+		              if nextnode <> 0 then
+		                tile = rack.tiles(i).face
+		                if horizontal then
+		                  if board(x+offset,y).partials_v then
+		                    if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                  end
+		                else
+		                  if board(x,y+offset).partials_h then
+		                    if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
+		                      psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
+		                      suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                    end
+		                  else
+		                    suffix(letters.Replace(tile,""),lplay+1,word+tile,nextnode,x,y,horizontal,offset+1,lmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                  end
+		                end
+		              end
+		            end
+		          next
+		        end
+		      end
+		    end
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub prefix_tt(letters as string, lplay as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
 		  dim tile as string
 		  dim i,j,nextnode,lmost as integer
 		  dim rack as new Rack
@@ -962,7 +2052,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 7
+		racksize As Integer = 1
 	#tag EndProperty
 
 

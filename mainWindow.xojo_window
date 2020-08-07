@@ -1877,10 +1877,13 @@ End
 		  listbox1.DeleteAllRows
 		  listbox2.DeleteAllRows
 		  initbag
+		  preset_square(6,7)
+		  preset_square(7,7)
 		  preset_square(8,7)
-		  preset_square(7,8)
+		  preset_square(6,8)
 		  preset_square(8,8)
-		  preset_square(9,8)
+		  preset_square(6,9)
+		  preset_square(7,9)
 		  preset_square(8,9)
 		  for i = 1 to racksize
 		    letters = letters + bag.Pop

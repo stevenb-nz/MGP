@@ -998,6 +998,7 @@ End
 		    end
 		  end
 		  'recurse
+		  'if not border, call suffix_t
 		  
 		End Sub
 	#tag EndMethod
@@ -1014,7 +1015,9 @@ End
 		      offset = offset + 1
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
-		  
+		  if nextnode <> 0 then
+		    'call suffix_f
+		  end
 		End Sub
 	#tag EndMethod
 

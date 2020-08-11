@@ -842,7 +842,12 @@ End
 		    end
 		  end
 		  'recurse
-		  'call suffix_f
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    'call suffix_f
+		  end
 		  
 		End Sub
 	#tag EndMethod
@@ -850,7 +855,12 @@ End
 	#tag Method, Flags = &h0
 		Sub prefix_ft(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
 		  'recurse
-		  'call suffix_t
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    'call suffix_t
+		  end
 		  
 		End Sub
 	#tag EndMethod
@@ -867,7 +877,12 @@ End
 		      offset = offset - 1
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
-		  'call suffix_f
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    'call suffix_f
+		  end
 		  
 		End Sub
 	#tag EndMethod
@@ -884,7 +899,12 @@ End
 		      offset = offset - 1
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
-		  'call suffix_t
+		  node = dagadag_nextnode(node,chr(96))
+		  if node <> 0 then
+		    lmost = offset
+		    offset = 1
+		    'call suffix_t
+		  end
 		  
 		End Sub
 	#tag EndMethod

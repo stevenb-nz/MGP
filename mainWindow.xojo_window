@@ -836,7 +836,11 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_ff(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  'check for end word
+		  if dagadag_endword(node) then
+		    if unique_play(letters_played,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
+		    end
+		  end
 		  'recurse
 		  'call suffix_f
 		  
@@ -950,7 +954,11 @@ End
 
 	#tag Method, Flags = &h0
 		Sub suffix_f(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, lmost as integer, pvalue as integer, pmult as integer, psum as integer)
-		  'check for end word
+		  if dagadag_endword(node) then
+		    if unique_play(letters_played,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
+		    end
+		  end
 		  'recurse
 		  
 		End Sub

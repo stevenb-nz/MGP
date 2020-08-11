@@ -857,7 +857,16 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_tf(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  'iterate
+		  do
+		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		    nextnode = dagadag_nextnode(node,tile)
+		    if nextnode <> 0 then
+		      node = nextnode
+		      word = "("+tile+")" + word
+		      pvalue = pvalue + tile_value(tile)
+		      offset = offset - 1
+		    end
+		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  'call suffix_f
 		  
 		End Sub
@@ -865,7 +874,16 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_tt(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  'iterate
+		  do
+		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		    nextnode = dagadag_nextnode(node,tile)
+		    if nextnode <> 0 then
+		      node = nextnode
+		      word = "("+tile+")" + word
+		      pvalue = pvalue + tile_value(tile)
+		      offset = offset - 1
+		    end
+		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  'call suffix_t
 		  
 		End Sub
@@ -966,7 +984,16 @@ End
 
 	#tag Method, Flags = &h0
 		Sub suffix_t(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, lmost as integer, pvalue as integer, pmult as integer, psum as integer)
-		  'iterate
+		  do
+		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
+		    nextnode = dagadag_nextnode(node,tile)
+		    if nextnode <> 0 then
+		      node = nextnode
+		      word = "("+tile+")" + word
+		      pvalue = pvalue + tile_value(tile)
+		      offset = offset + 1
+		    end
+		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  
 		End Sub
 	#tag EndMethod

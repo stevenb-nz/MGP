@@ -836,6 +836,10 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_ff(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,leftmost,nextnode as integer
+		  dim rack as new Rack
+		  
 		  if dagadag_endword(node) then
 		    if unique_play(letters_played,x,y,horizontal) then
 		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
@@ -902,7 +906,7 @@ End
 		  end
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
-		    lmost = offset
+		    leftmost = offset
 		    offset = 1
 		    'call suffix_f
 		  end
@@ -912,6 +916,10 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_ft(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim i,j,leftmost,nextnode as integer
+		  dim rack as new Rack
+		  
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
 		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
 		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
@@ -972,7 +980,7 @@ End
 		  end
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
-		    lmost = offset
+		    leftmost = offset
 		    offset = 1
 		    'call suffix_t
 		  end
@@ -982,6 +990,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_tf(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim leftmost,nextnode as integer
+		  
 		  do
 		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
 		    nextnode = dagadag_nextnode(node,tile)
@@ -994,7 +1005,7 @@ End
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
-		    lmost = offset
+		    leftmost = offset
 		    offset = 1
 		    'call suffix_f
 		  end
@@ -1004,6 +1015,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub prefix_tt(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		  dim tile as string
+		  dim leftmost,nextnode as integer
+		  
 		  do
 		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
 		    nextnode = dagadag_nextnode(node,tile)
@@ -1016,7 +1030,7 @@ End
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
-		    lmost = offset
+		    leftmost = offset
 		    offset = 1
 		    'call suffix_t
 		  end

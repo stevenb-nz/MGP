@@ -97,7 +97,7 @@ Begin Window mainWindow
       Border          =   True
       ColumnCount     =   4
       ColumnsResizable=   False
-      ColumnWidths    =   "35%,15%,15%,35%"
+      ColumnWidths    =   "35%,20%,15%,30%"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
@@ -1186,8 +1186,10 @@ End
 		        end
 		      next
 		    end
+		  else
+		    suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
-		  'if not border, call suffix_t
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1208,7 +1210,7 @@ End
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  if nextnode <> 0 then
-		    'call suffix_f
+		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
 		End Sub
 	#tag EndMethod

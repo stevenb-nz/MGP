@@ -908,7 +908,7 @@ End
 		  if node <> 0 then
 		    leftmost = offset
 		    offset = 1
-		    'call suffix_f
+		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
 		  
 		End Sub
@@ -982,7 +982,7 @@ End
 		  if node <> 0 then
 		    leftmost = offset
 		    offset = 1
-		    'call suffix_t
+		    suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
 		  
 		End Sub
@@ -1007,7 +1007,7 @@ End
 		  if node <> 0 then
 		    leftmost = offset
 		    offset = 1
-		    'call suffix_f
+		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
 		  
 		End Sub
@@ -1032,7 +1032,7 @@ End
 		  if node <> 0 then
 		    leftmost = offset
 		    offset = 1
-		    'call suffix_t
+		    suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
 		  
 		End Sub

@@ -1003,11 +1003,13 @@ End
 		      offset = offset - 1
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
-		  node = dagadag_nextnode(node,chr(96))
-		  if node <> 0 then
-		    leftmost = offset
-		    offset = 1
-		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		  if nextnode <> 0 then
+		    node = dagadag_nextnode(node,chr(96))
+		    if node <> 0 then
+		      leftmost = offset
+		      offset = 1
+		      suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		    end
 		  end
 		  
 		End Sub
@@ -1127,7 +1129,7 @@ End
 		  
 		  if dagadag_endword(node) then
 		    if unique_play(letters_played,x,y,horizontal) then
-		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
+		      process(if(horizontal,h_rc(x+leftmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+leftmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
 		    end
 		  end
 		  rack.import letters

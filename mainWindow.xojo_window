@@ -1206,7 +1206,7 @@ End
 		    nextnode = dagadag_nextnode(node,tile)
 		    if nextnode <> 0 then
 		      node = nextnode
-		      word = "("+tile+")" + word
+		      word = word + "("+tile+")"
 		      pvalue = pvalue + tile_value(tile)
 		      offset = offset + 1
 		    end

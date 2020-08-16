@@ -1053,6 +1053,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub process(location as string, word as String, score as integer, leave as String)
+		  word = word.ReplaceAll(")(","")
 		  Listbox1.AddRow word
 		  listbox1.Cell(Listbox1.LastIndex,1) = location
 		  listbox1.Cell(Listbox1.LastIndex,2) = str(score)
@@ -1076,18 +1077,18 @@ End
 		          if horizontal then
 		            if board(x,y).partials_v then
 		              if board(x,y).part_scores_v(j-71) > -1 then
-		                prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,board(x,y).part_scores_v(j-71))
+		                prefix(letters.Replace(rack.tiles(i).face,""),1,chr(j),node,x,y,horizontal,-1,0,board(x,y).wordmult,board(x,y).part_scores_v(j-71))
 		              end
 		            else
-		              prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
+		              prefix(letters.Replace(rack.tiles(i).face,""),1,chr(j),node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
 		            end
 		          else
 		            if board(x,y).partials_h then
 		              if board(x,y).part_scores_h(j-71) > -1 then
-		                prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,board(x,y).part_scores_h(j-71))
+		                prefix(letters.Replace(rack.tiles(i).face,""),1,chr(j),node,x,y,horizontal,-1,0,board(x,y).wordmult,board(x,y).part_scores_h(j-71))
 		              end
 		            else
-		              prefix(letters.Replace(rack.tiles(i).face,""),1,"•"+chr(j)+"•",node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
+		              prefix(letters.Replace(rack.tiles(i).face,""),1,chr(j),node,x,y,horizontal,-1,0,board(x,y).wordmult,0)
 		            end
 		          end
 		        end
@@ -1099,18 +1100,18 @@ End
 		        if horizontal then
 		          if board(x,y).partials_v then
 		            if board(x,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
-		              prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,board(x,y).part_scores_v(asc(rack.tiles(i).face)-65))
+		              prefix(letters.Replace(tile,""),1,tile,node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,board(x,y).part_scores_v(asc(rack.tiles(i).face)-65))
 		            end
 		          else
-		            prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
+		            prefix(letters.Replace(tile,""),1,tile,node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
 		          end
 		        else
 		          if board(x,y).partials_h then
 		            if board(x,y).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
-		              prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,board(x,y).part_scores_h(asc(rack.tiles(i).face)-65))
+		              prefix(letters.Replace(tile,""),1,tile,node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,board(x,y).part_scores_h(asc(rack.tiles(i).face)-65))
 		            end
 		          else
-		            prefix(letters.Replace(tile,""),1,"•"+tile+"•",node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
+		            prefix(letters.Replace(tile,""),1,tile,node,x,y,horizontal,-1,tile_value(tile)*board(x,y).lettermult,board(x,y).wordmult,0)
 		          end
 		        end
 		      end

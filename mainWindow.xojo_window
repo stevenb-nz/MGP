@@ -851,11 +851,6 @@ End
 		  dim i,j,leftmost,nextnode as integer
 		  dim rack as new Rack
 		  
-		  if dagadag_endword(node) then
-		    if unique_play(letters_played,x,y,horizontal) then
-		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
-		    end
-		  end
 		  rack.import letters
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
 		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
@@ -1015,6 +1010,7 @@ End
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  if nextnode <> 0 then
+		    check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
 		    node = dagadag_nextnode(node,chr(96))
 		    if node <> 0 then
 		      leftmost = offset
@@ -1139,11 +1135,6 @@ End
 		  dim i,j,nextnode as integer
 		  dim rack as new Rack
 		  
-		  if dagadag_endword(node) then
-		    if unique_play(letters_played,x,y,horizontal) then
-		      process(if(horizontal,h_rc(x+leftmost+1,y)+"-"+h_rc(x,y),v_cr(x,y+leftmost+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
-		    end
-		  end
 		  rack.import letters
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face)="" then
 		    if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then

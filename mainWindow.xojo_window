@@ -910,6 +910,7 @@ End
 		      end
 		    end
 		  end
+		  check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
 		    leftmost = offset

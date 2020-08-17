@@ -209,6 +209,17 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub check_for_word(word as string, letters as string, node as integer, letters_played as integer, x as integer, y as integer, offset as integer, horizontal as boolean, psum as integer, pvalue as integer, pmult as integer)
+		  if dagadag_endword(node) then
+		    if unique_play(letters_played,x,y,horizontal) then
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
+		    end
+		  end
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub do_move(letters as string)
 		  dim i,j as integer
 		  

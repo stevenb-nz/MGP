@@ -1216,8 +1216,10 @@ End
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  if nextnode <> 0 then
+		    check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
 		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		  end
+		  
 		End Sub
 	#tag EndMethod
 

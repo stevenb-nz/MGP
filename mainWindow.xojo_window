@@ -1351,11 +1351,11 @@ End
 		  
 		  Select Case column
 		  Case 0 'word
-		    sortstring1 = Me.Cell(row1, column)
-		    sortstring2 = Me.Cell( row2, column)
+		    sortstring1 = Me.Cell(row1, column).ReplaceAll("(","").replaceall(")","")
+		    sortstring2 = Me.Cell(row2, column).ReplaceAll("(","").replaceall(")","")
 		  Case 1 'location
 		    sortstring1 = Me.Cell(row1, column)
-		    sortstring2 = Me.Cell( row2, column)
+		    sortstring2 = Me.Cell(row2, column)
 		  Case 2 'score
 		    sortstring1 = Format(Val(Me.Cell(row1, column)),"0000")
 		    sortstring2 = Format(Val(Me.Cell(row2, column)),"0000")

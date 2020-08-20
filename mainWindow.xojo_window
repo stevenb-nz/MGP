@@ -1148,22 +1148,22 @@ End
 		                if board(x+offset,y).partials_v then
 		                  if board(x+offset,y).part_scores_v(j-71) > -1 then
 		                    psum = psum + board(x+offset,y).part_scores_v(j-71)
-		                    check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                    check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x+offset,y).wordmult)
 		                    suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
-		                  check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                  check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x+offset,y).wordmult)
 		                  suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
 		                if board(x,y+offset).partials_h then
 		                  if board(x,y+offset).part_scores_h(j-71) > -1 then
 		                    psum = psum + board(x,y+offset).part_scores_h(j-71)
-		                    check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                    check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x,y+offset).wordmult)
 		                    suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
-		                  check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                  check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x,y+offset).wordmult)
 		                  suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              end
@@ -1177,22 +1177,22 @@ End
 		              if board(x+offset,y).partials_v then
 		                if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
 		                  psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
-		                  check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                  check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
 		                  suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
-		                check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
 		                suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		              end
 		            else
 		              if board(x,y+offset).partials_h then
 		                if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
 		                  psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
-		                  check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                  check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
 		                  suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              else
-		                check_for_word(word,letters,node,letters_played,x,y,leftmost,horizontal,psum,pvalue,pmult)
+		                check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
 		                suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		              end
 		            end
@@ -1297,7 +1297,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 7
+		racksize As Integer = 3
 	#tag EndProperty
 
 

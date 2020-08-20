@@ -927,6 +927,7 @@ End
 		  dim i,j,leftmost,nextnode as integer
 		  dim rack as new Rack
 		  
+		  rack.import letters
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
 		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
 		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then

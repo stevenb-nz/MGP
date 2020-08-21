@@ -25,7 +25,7 @@ Begin Window mainWindow
    Resizeable      =   True
    Title           =   "Multi-game Player"
    Visible         =   True
-   Width           =   1102
+   Width           =   1202
    Begin PushButton dagadagButton
       AutoDeactivate  =   True
       Bold            =   False
@@ -95,9 +95,9 @@ Begin Window mainWindow
       AutoHideScrollbars=   True
       Bold            =   False
       Border          =   True
-      ColumnCount     =   4
+      ColumnCount     =   5
       ColumnsResizable=   False
-      ColumnWidths    =   "35%,20%,15%,30%"
+      ColumnWidths    =   "30%,15%,10%,25%,20%"
       DataField       =   ""
       DataSource      =   ""
       DefaultRowHeight=   -1
@@ -138,7 +138,7 @@ Begin Window mainWindow
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   350
+      Width           =   450
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
@@ -212,7 +212,7 @@ End
 		Sub check_for_word(word as string, letters as string, node as integer, letters_played as integer, x as integer, y as integer, offset as integer, horizontal as boolean, psum as integer, pvalue as integer, pmult as integer)
 		  if dagadag_endword(node) then
 		    if unique_play(letters_played,x,y,horizontal) then
-		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters)
+		      process(if(horizontal,h_rc(x+offset+1,y)+"-"+h_rc(x,y),v_cr(x,y+offset+1)+"-"+v_cr(x,y)),word,psum+pvalue*pmult+if(letters_played=7,50,0),letters,str(psum)+"+"+str(pvalue)+"*"+str(pmult)+"+"+str(if(letters_played=7,50,0)))
 		    end
 		  end
 		  
@@ -1061,12 +1061,13 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub process(location as string, word as String, score as integer, leave as String)
+		Sub process(location as string, word as String, score as integer, leave as String, calc as string)
 		  word = word.ReplaceAll(")(","")
 		  Listbox1.AddRow word
 		  listbox1.Cell(Listbox1.LastIndex,1) = location
 		  listbox1.Cell(Listbox1.LastIndex,2) = str(score)
 		  listbox1.Cell(Listbox1.LastIndex,3) = leave
+		  listbox1.Cell(Listbox1.LastIndex,4) = calc
 		  
 		End Sub
 	#tag EndMethod
@@ -1149,22 +1150,30 @@ End
 		                if board(x+offset,y).partials_v then
 		                  if board(x+offset,y).part_scores_v(j-71) > -1 then
 		                    psum = psum + board(x+offset,y).part_scores_v(j-71)
-		                    check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x+offset,y).wordmult)
+		                    if board(x+offset+1,y).face = "" then
+		                      check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x+offset,y).wordmult)
+		                    end
 		                    suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                  end
 		                else
-		                  check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x+offset,y).wordmult)
+		                  if board(x+offset+1,y).face = "" then
+		                    check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x+offset,y).wordmult)
+		                  end
 		                  suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
 		                if board(x,y+offset).partials_h then
 		                  if board(x,y+offset).part_scores_h(j-71) > -1 then
 		                    psum = psum + board(x,y+offset).part_scores_h(j-71)
-		                    check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x,y+offset).wordmult)
+		                    if board(x,y+offset+1).face = "" then
+		                      check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x,y+offset).wordmult)
+		                    end
 		                    suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                  end
 		                else
-		                  check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x,y+offset).wordmult)
+		                  if board(x,y+offset+1).face = "" then
+		                    check_for_word(word+chr(j),letters.Replace(rack.tiles(i).face,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue,pmult*board(x,y+offset).wordmult)
+		                  end
 		                  suffix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,word+chr(j),nextnode,x,y,horizontal,offset+1,leftmost,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              end
@@ -1178,22 +1187,30 @@ End
 		              if board(x+offset,y).partials_v then
 		                if board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65) > -1 then
 		                  psum = psum + board(x+offset,y).part_scores_v(asc(rack.tiles(i).face)-65)
-		                  check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		                  if board(x+offset+1,y).face = "" then
+		                    check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		                  end
 		                  suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		                end
 		              else
-		                check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		                if board(x+offset+1,y).face = "" then
+		                  check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult)
+		                end
 		                suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		              end
 		            else
 		              if board(x,y+offset).partials_h then
 		                if board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65) > -1 then
 		                  psum = psum + board(x,y+offset).part_scores_h(asc(rack.tiles(i).face)-65)
-		                  check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		                  if board(x,y+offset+1).face = "" then
+		                    check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		                  end
 		                  suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              else
-		                check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		                if board(x,y+offset+1).face = "" then
+		                  check_for_word(word+tile,letters.Replace(tile,""),nextnode,letters_played+1,x,y,leftmost,horizontal,psum,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult)
+		                end
 		                suffix_f(letters.Replace(tile,""),letters_played+1,word+tile,nextnode,x,y,horizontal,offset+1,leftmost,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		              end
 		            end
@@ -1298,7 +1315,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		racksize As Integer = 3
+		racksize As Integer = 7
 	#tag EndProperty
 
 

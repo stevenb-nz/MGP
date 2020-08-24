@@ -249,7 +249,13 @@ End
 		      next
 		    next
 		  end
-		  'choose and play move
+		  if listbox1.ListCount > 0 then
+		    Listbox1.SortedColumn = 2
+		    Listbox1.Sort
+		    listbox1.Heading(0) = str(ListBox1.ListCount)
+		    letters = makeplay(Listbox1.Cell(0,0),Listbox1.Cell(0,1),letters)
+		  end
+		  
 		End Sub
 	#tag EndMethod
 
@@ -356,6 +362,23 @@ End
 		  board(14,10).lettermult = 3
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function makeplay(word as string, location as string, rack as string) As string
+		  dim x,y as integer
+		  
+		  location = left(location,instr(location,"-")-1)
+		  if asc(left(location,1)) > 64 and asc(left(location,1)) < 80 then
+		    'vertical
+		    
+		  else
+		    x = asc(right(location,1))-64
+		    y = val(left(location,len(location)-1))
+		    listbox2.AddRow word+" equals Across from "+str(x)+","+str(y)
+		  end
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -943,9 +966,6 @@ End
 		  letters = join(temp,"")
 		  listbox2.AddRow "Rack: " + letters
 		  do_move(letters)
-		  Listbox1.SortedColumn = 2
-		  Listbox1.Sort
-		  listbox1.Heading(0) = str(ListBox1.ListCount)
 		  
 		End Sub
 	#tag EndEvent

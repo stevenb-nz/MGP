@@ -220,7 +220,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub do_move(letters as string)
+		Function do_move(letters as string) As string
 		  dim i,j as integer
 		  
 		  if board(8,8).face = "" then
@@ -253,10 +253,11 @@ End
 		    Listbox1.SortedColumn = 2
 		    Listbox1.Sort
 		    listbox1.Heading(0) = str(ListBox1.ListCount)
-		    letters = makeplay(Listbox1.Cell(0,0),Listbox1.Cell(0,1),letters)
+		    make_play(Listbox1.Cell(0,0),Listbox1.Cell(0,1),letters)
+		    return listbox1.cell(0,3)
 		  end
-		  
-		End Sub
+		  return letters
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -365,7 +366,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function makeplay(word as string, location as string, rack as string) As string
+		Sub make_play(word as string, location as string, rack as string)
 		  dim x,y as integer
 		  
 		  location = left(location,instr(location,"-")-1)
@@ -379,7 +380,7 @@ End
 		    listbox2.AddRow word+" equals Across from "+str(x)+","+str(y)
 		  end
 		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -951,7 +952,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  dim letters as string
+		  dim letters,leave as string
 		  dim temp() as string
 		  dim i as integer
 		  
@@ -968,7 +969,8 @@ End
 		  temp.Sort
 		  letters = join(temp,"")
 		  listbox2.AddRow "Rack: " + letters
-		  do_move(letters)
+		  leave = do_move(letters)
+		  listbox2.AddRow "Leave: " + leave
 		  
 		End Sub
 	#tag EndEvent

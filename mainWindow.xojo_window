@@ -659,6 +659,19 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub resetboard()
+		  dim i,j as integer
+		  
+		  for i = 0 to 16
+		    for j = 0 to 16
+		      board(i,j).face = ""
+		    next
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub startwords(letters as String, x as integer, y as integer, horizontal as boolean)
 		  dim tile as string
 		  dim rack as new Rack
@@ -921,14 +934,7 @@ End
 		  listbox1.DeleteAllRows
 		  listbox2.DeleteAllRows
 		  initbag
-		  preset_square(6,8)
-		  preset_square(7,8)
-		  preset_square(8,8)
-		  preset_square(6,9)
-		  preset_square(8,9)
-		  preset_square(6,10)
-		  preset_square(7,10)
-		  preset_square(8,10)
+		  resetboard
 		  for i = 1 to racksize
 		    letters = letters + bag.Pop
 		  next

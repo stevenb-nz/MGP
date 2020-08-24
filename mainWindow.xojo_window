@@ -367,16 +367,33 @@ End
 
 	#tag Method, Flags = &h0
 		Sub make_play(word as string, location as string, rack as string)
-		  dim x,y as integer
+		  dim i,x,y as integer
+		  dim c as string
 		  
 		  location = left(location,instr(location,"-")-1)
 		  if asc(left(location,1)) > 64 and asc(left(location,1)) < 80 then
 		    x = asc(left(location,1))-64
 		    y = val(right(location,len(location)-1))
+		    for i = 1 to len(word)
+		      c = mid(word,i,1)
+		      if c <> "(" and c <> ")" then
+		        if board(x,y+i-1).face = "" then
+		          board(x,y+i-1).face = c
+		        end
+		      end
+		    next
 		    listbox2.AddRow word+" equals Down from "+str(x)+","+str(y)
 		  else
 		    x = asc(right(location,1))-64
 		    y = val(left(location,len(location)-1))
+		    for i = 1 to len(word)
+		      c = mid(word,i,1)
+		      if c <> "(" and c <> ")" then
+		        if board(x+i-1,y).face = "" then
+		          board(x+i-1,y).face = c
+		        end
+		      end
+		    next
 		    listbox2.AddRow word+" equals Across from "+str(x)+","+str(y)
 		  end
 		  
@@ -960,8 +977,6 @@ End
 		  listbox2.DeleteAllRows
 		  initbag
 		  resetboard
-		  preset_square(7,8)
-		  preset_square(8,8)
 		  for i = 1 to racksize
 		    letters = letters + bag.Pop
 		  next

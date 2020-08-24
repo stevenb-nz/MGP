@@ -370,8 +370,9 @@ End
 		  
 		  location = left(location,instr(location,"-")-1)
 		  if asc(left(location,1)) > 64 and asc(left(location,1)) < 80 then
-		    'vertical
-		    
+		    x = asc(left(location,1))-64
+		    y = val(right(location,len(location)-1))
+		    listbox2.AddRow word+" equals Down from "+str(x)+","+str(y)
 		  else
 		    x = asc(right(location,1))-64
 		    y = val(left(location,len(location)-1))
@@ -958,6 +959,8 @@ End
 		  listbox2.DeleteAllRows
 		  initbag
 		  resetboard
+		  preset_square(7,8)
+		  preset_square(8,8)
 		  for i = 1 to racksize
 		    letters = letters + bag.Pop
 		  next

@@ -700,6 +700,7 @@ End
 		  for i = 0 to 16
 		    for j = 0 to 16
 		      board(i,j).face = ""
+		      board(i,j).anchor = false
 		    next
 		  next
 		  
@@ -1256,5 +1257,15 @@ End
 		Group="Behavior"
 		InitialValue="7"
 		Type="Integer"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="rack1"
+		Group="Behavior"
+		Type="String"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="rack2"
+		Group="Behavior"
+		Type="String"
 	#tag EndViewProperty
 #tag EndViewBehavior

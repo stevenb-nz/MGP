@@ -701,6 +701,8 @@ End
 		    for j = 0 to 16
 		      board(i,j).face = ""
 		      board(i,j).anchor = false
+		      board(i,j).partials_h = false
+		      board(i,j).partials_v = false
 		    next
 		  next
 		  

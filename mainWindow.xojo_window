@@ -254,9 +254,12 @@ End
 		    Listbox1.Sort
 		    listbox1.Heading(0) = str(ListBox1.ListCount)
 		    make_play(Listbox1.Cell(0,0),Listbox1.Cell(0,1),letters)
+		    listbox2.AddRow Listbox1.Cell(0,0)+" "+Listbox1.Cell(0,1)+" "+Listbox1.Cell(0,2)+" "+Listbox1.Cell(0,3)
 		    return listbox1.cell(0,3)
 		  end
+		  listbox2.addrow "Pass"
 		  return letters
+		  
 		End Function
 	#tag EndMethod
 
@@ -368,33 +371,26 @@ End
 	#tag Method, Flags = &h0
 		Sub make_play(word as string, location as string, rack as string)
 		  dim i,x,y as integer
-		  dim c as string
 		  
+		  word = word.ReplaceAll("(","")
+		  word = word.ReplaceAll(")","")
 		  location = left(location,instr(location,"-")-1)
 		  if asc(left(location,1)) > 64 and asc(left(location,1)) < 80 then
 		    x = asc(left(location,1))-64
 		    y = val(right(location,len(location)-1))
 		    for i = 1 to len(word)
-		      c = mid(word,i,1)
-		      if c <> "(" and c <> ")" then
-		        if board(x,y+i-1).face = "" then
-		          board(x,y+i-1).face = c
-		        end
+		      if board(x,y+i-1).face = "" then
+		        board(x,y+i-1).face = mid(word,i,1)
 		      end
 		    next
-		    listbox2.AddRow word+" equals Down from "+str(x)+","+str(y)
 		  else
 		    x = asc(right(location,1))-64
 		    y = val(left(location,len(location)-1))
 		    for i = 1 to len(word)
-		      c = mid(word,i,1)
-		      if c <> "(" and c <> ")" then
-		        if board(x+i-1,y).face = "" then
-		          board(x+i-1,y).face = c
-		        end
+		      if board(x+i-1,y).face = "" then
+		        board(x+i-1,y).face = mid(word,i,1)
 		      end
 		    next
-		    listbox2.AddRow word+" equals Across from "+str(x)+","+str(y)
 		  end
 		  
 		End Sub
@@ -454,7 +450,6 @@ End
 		              newrow = newrow + ", " + chr(k+97) + ", " + str(board(i,j).part_scores_h(k+26))
 		            end
 		          next
-		          listbox2.AddRow newrow
 		        end
 		        if board(i,j-1).face <> "" or board(i,j+1).face <> "" then
 		          newrow = v_cr(i,j)
@@ -500,7 +495,6 @@ End
 		              newrow = newrow + ", " + chr(k+97) + ", " + str(board(i,j).part_scores_v(k+26))
 		            end
 		          next
-		          listbox2.AddRow newrow
 		        end
 		      end
 		    next
@@ -684,7 +678,6 @@ End
 		  if board(x,y).face = "?" then
 		    board(x,y).face = chr(floor(rnd*26)+97)
 		  end
-		  listbox2.addrow h_rc(x,y)+" - " + board(x,y).face
 		  
 		End Sub
 	#tag EndMethod
@@ -952,6 +945,14 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		rack1 As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		rack2 As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		racksize As Integer = 7
 	#tag EndProperty
 
@@ -969,23 +970,27 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  dim letters,leave as string
+		  dim letters as string
 		  dim temp() as string
-		  dim i as integer
+		  dim i,leave as integer
 		  
+		  if bag.Ubound < 0 and rack1 = "" then
+		    listbox2.DeleteAllRows
+		    initbag
+		    resetboard
+		    rack1 = ""
+		  end
 		  listbox1.DeleteAllRows
-		  listbox2.DeleteAllRows
-		  initbag
-		  resetboard
-		  for i = 1 to racksize
-		    letters = letters + bag.Pop
+		  leave = len(rack1)+1
+		  for i = leave to racksize
+		    if bag.Ubound > -1 then
+		      rack1 = rack1 + bag.Pop
+		    end
 		  next
-		  temp = split(letters,"")
+		  temp = split(rack1,"")
 		  temp.Sort
-		  letters = join(temp,"")
-		  listbox2.AddRow "Rack: " + letters
-		  leave = do_move(letters)
-		  listbox2.AddRow "Leave: " + leave
+		  rack1 = join(temp,"")
+		  rack1 = do_move(rack1)
 		  
 		End Sub
 	#tag EndEvent

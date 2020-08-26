@@ -220,7 +220,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function do_move(letters as string) As string
+		Function do_move(letters As string, player As integer) As string
 		  dim i,j as integer
 		  
 		  if board(8,8).face = "" then
@@ -254,10 +254,10 @@ End
 		    Listbox1.Sort
 		    listbox1.Heading(0) = str(ListBox1.ListCount)
 		    make_play(Listbox1.Cell(0,0),Listbox1.Cell(0,1),letters)
-		    listbox2.AddRow Listbox1.Cell(0,0)+" "+Listbox1.Cell(0,1)+" "+Listbox1.Cell(0,2)+" "+Listbox1.Cell(0,3)
+		    listbox2.AddRow str(player)+": "+Listbox1.Cell(0,0)+" "+Listbox1.Cell(0,1)+" "+Listbox1.Cell(0,2)+" "+Listbox1.Cell(0,3)
 		    return listbox1.cell(0,3)
 		  end
-		  listbox2.addrow "Pass"
+		  listbox2.addrow str(player)+": Pass"
 		  zeros = zeros + 1
 		  return letters
 		  
@@ -960,6 +960,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		toplay As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		zeros As Integer
 	#tag EndProperty
 
@@ -981,24 +985,40 @@ End
 		  dim temp() as string
 		  dim i,leave as integer
 		  
-		  if zeros = 3 or (bag.Ubound < 0 and rack1 = "") then
+		  if listbox2.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = "")) then
 		    listbox2.DeleteAllRows
 		    initbag
 		    resetboard
 		    rack1 = ""
+		    rack2 = ""
 		    zeros = 0
+		    toplay = 1
 		  end
 		  listbox1.DeleteAllRows
-		  leave = len(rack1)+1
-		  for i = leave to racksize
-		    if bag.Ubound > -1 then
-		      rack1 = rack1 + bag.Pop
-		    end
-		  next
-		  temp = split(rack1,"")
-		  temp.Sort
-		  rack1 = join(temp,"")
-		  rack1 = do_move(rack1)
+		  if toplay = 1 then
+		    leave = len(rack1)+1
+		    for i = leave to racksize
+		      if bag.Ubound > -1 then
+		        rack1 = rack1 + bag.Pop
+		      end
+		    next
+		    temp = split(rack1,"")
+		    temp.Sort
+		    rack1 = join(temp,"")
+		    rack1 = do_move(rack1,toplay)
+		  else
+		    leave = len(rack2)+1
+		    for i = leave to racksize
+		      if bag.Ubound > -1 then
+		        rack2 = rack2 + bag.Pop
+		      end
+		    next
+		    temp = split(rack2,"")
+		    temp.Sort
+		    rack2 = join(temp,"")
+		    rack2 = do_move(rack2,toplay)
+		  end
+		  toplay = 3 - toplay
 		  
 		End Sub
 	#tag EndEvent

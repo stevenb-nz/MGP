@@ -258,6 +258,7 @@ End
 		    return listbox1.cell(0,3)
 		  end
 		  listbox2.addrow "Pass"
+		  zeros = zeros + 1
 		  return letters
 		  
 		End Function
@@ -959,6 +960,10 @@ End
 		racksize As Integer = 7
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		zeros As Integer
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
@@ -977,11 +982,12 @@ End
 		  dim temp() as string
 		  dim i,leave as integer
 		  
-		  if bag.Ubound < 0 and rack1 = "" then
+		  if zeros = 3 or (bag.Ubound < 0 and rack1 = "") then
 		    listbox2.DeleteAllRows
 		    initbag
 		    resetboard
 		    rack1 = ""
+		    zeros = 0
 		  end
 		  listbox1.DeleteAllRows
 		  leave = len(rack1)+1

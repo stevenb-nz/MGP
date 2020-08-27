@@ -221,7 +221,8 @@ End
 
 	#tag Method, Flags = &h0
 		Function do_move(letters As string, player As integer) As string
-		  dim i,j as integer
+		  dim i,j,move,n as integer
+		  dim check as boolean
 		  
 		  if board(8,8).face = "" then
 		    startwords(letters,8,8,true)
@@ -253,9 +254,23 @@ End
 		    Listbox1.SortedColumn = 2
 		    Listbox1.Sort
 		    listbox1.Heading(0) = str(ListBox1.ListCount)
-		    make_play(Listbox1.Cell(0,0),Listbox1.Cell(0,1),letters)
-		    listbox2.AddRow str(player)+": "+Listbox1.Cell(0,0)+" "+Listbox1.Cell(0,1)+" "+Listbox1.Cell(0,2)+" "+Listbox1.Cell(0,3)
-		    return listbox1.cell(0,3)
+		    n=1
+		    check = false
+		    do
+		      if n < listbox1.ListCount then
+		        if val(Listbox1.Cell(n,2)) = val(Listbox1.Cell(0,2)) then
+		          n = n + 1
+		        else
+		          check = true
+		        end
+		      else
+		        check = true
+		      end
+		    loop until check
+		    move = floor(rnd*n)
+		    make_play(Listbox1.Cell(move,0),Listbox1.Cell(move,1),letters)
+		    listbox2.AddRow str(player)+": "+Listbox1.Cell(move,0)+" "+Listbox1.Cell(move,1)+" "+Listbox1.Cell(move,2)+" "+Listbox1.Cell(move,3)
+		    return listbox1.cell(n-1,3)
 		  end
 		  listbox2.addrow str(player)+": Pass"
 		  zeros = zeros + 1

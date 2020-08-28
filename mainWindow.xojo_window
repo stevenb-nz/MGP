@@ -360,6 +360,50 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub play_game()
+		  dim letters as string
+		  dim temp() as string
+		  dim i,leave as integer
+		  
+		  listbox2.DeleteAllRows
+		  initbag
+		  resetboard
+		  rack1 = ""
+		  rack2 = ""
+		  zeros = 0
+		  toplay = 1
+		  do
+		    if toplay = 1 then
+		      leave = len(rack1)+1
+		      for i = leave to racksize
+		        if bag.Ubound > -1 then
+		          rack1 = rack1 + bag.Pop
+		        end
+		      next
+		      temp = split(rack1,"")
+		      temp.Sort
+		      rack1 = join(temp,"")
+		      rack1 = do_move(rack1,toplay)
+		    else
+		      leave = len(rack2)+1
+		      for i = leave to racksize
+		        if bag.Ubound > -1 then
+		          rack2 = rack2 + bag.Pop
+		        end
+		      next
+		      temp = split(rack2,"")
+		      temp.Sort
+		      rack2 = join(temp,"")
+		      rack2 = do_move(rack2,toplay)
+		    end
+		    redim candidates(-1)
+		    toplay = 3 - toplay
+		  loop until listbox2.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = ""))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub precomp(letters as string, x as integer, y as integer)
 		  dim rack as new Rack
 		  dim i,j,k,l,offset,ptot,tot,wmult as integer
@@ -953,44 +997,7 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  dim letters as string
-		  dim temp() as string
-		  dim i,leave as integer
-		  redim candidates(-1)
-		  
-		  if listbox2.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = "")) then
-		    listbox2.DeleteAllRows
-		    initbag
-		    resetboard
-		    rack1 = ""
-		    rack2 = ""
-		    zeros = 0
-		    toplay = 1
-		  end
-		  if toplay = 1 then
-		    leave = len(rack1)+1
-		    for i = leave to racksize
-		      if bag.Ubound > -1 then
-		        rack1 = rack1 + bag.Pop
-		      end
-		    next
-		    temp = split(rack1,"")
-		    temp.Sort
-		    rack1 = join(temp,"")
-		    rack1 = do_move(rack1,toplay)
-		  else
-		    leave = len(rack2)+1
-		    for i = leave to racksize
-		      if bag.Ubound > -1 then
-		        rack2 = rack2 + bag.Pop
-		      end
-		    next
-		    temp = split(rack2,"")
-		    temp.Sort
-		    rack2 = join(temp,"")
-		    rack2 = do_move(rack2,toplay)
-		  end
-		  toplay = 3 - toplay
+		  play_game
 		  
 		End Sub
 	#tag EndEvent

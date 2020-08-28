@@ -25,7 +25,7 @@ Begin Window mainWindow
    Resizeable      =   True
    Title           =   "Multi-game Player"
    Visible         =   True
-   Width           =   1102
+   Width           =   740
    Begin PushButton dagadagButton
       AutoDeactivate  =   True
       Bold            =   False
@@ -89,58 +89,6 @@ Begin Window mainWindow
       Underline       =   False
       Visible         =   True
       Width           =   80
-   End
-   Begin Listbox Listbox1
-      AutoDeactivate  =   True
-      AutoHideScrollbars=   True
-      Bold            =   False
-      Border          =   True
-      ColumnCount     =   4
-      ColumnsResizable=   False
-      ColumnWidths    =   "35%,20%,15%,30%"
-      DataField       =   ""
-      DataSource      =   ""
-      DefaultRowHeight=   -1
-      Enabled         =   True
-      EnableDrag      =   False
-      EnableDragReorder=   False
-      GridLinesHorizontal=   0
-      GridLinesVertical=   0
-      HasHeading      =   True
-      HeadingIndex    =   -1
-      Height          =   694
-      HelpTag         =   ""
-      Hierarchical    =   False
-      Index           =   -2147483648
-      InitialParent   =   ""
-      InitialValue    =   ""
-      Italic          =   False
-      Left            =   732
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      RequiresSelection=   False
-      Scope           =   0
-      ScrollbarHorizontal=   False
-      ScrollBarVertical=   True
-      SelectionType   =   0
-      ShowDropIndicator=   False
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   20
-      Transparent     =   False
-      Underline       =   False
-      UseFocusRing    =   True
-      Visible         =   True
-      Width           =   350
-      _ScrollOffset   =   0
-      _ScrollWidth    =   -1
    End
    Begin Listbox Listbox2
       AutoDeactivate  =   True
@@ -209,6 +157,21 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub add_play(location as string, word as String, score as integer, leave as String)
+		  dim move as Move
+		  
+		  move = new Move
+		  move.location = location
+		  word = word.ReplaceAll(")(","")
+		  move.word = word
+		  move.score = score
+		  move.leave = leave
+		  candidates.Append move
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub check_for_word(word as string, letters as string, node as integer, letters_played as integer, x as integer, y as integer, offset as integer, horizontal as boolean, psum as integer, pvalue as integer, pmult as integer)
 		  if dagadag_endword(node) then
 		    if unique_play(letters_played,x,y,horizontal) then
@@ -221,7 +184,7 @@ End
 
 	#tag Method, Flags = &h0
 		Function do_move(letters As string, player As integer) As string
-		  dim i,j,move,n as integer
+		  dim i,j,move as integer
 		  dim check as boolean
 		  
 		  if board(8,8).face = "" then
@@ -250,31 +213,16 @@ End
 		      next
 		    next
 		  end
-		  if listbox1.ListCount > 0 then
-		    Listbox1.SortedColumn = 2
-		    Listbox1.Sort
-		    listbox1.Heading(0) = str(ListBox1.ListCount)
-		    n=1
-		    check = false
-		    do
-		      if n < listbox1.ListCount then
-		        if val(Listbox1.Cell(n,2)) = val(Listbox1.Cell(0,2)) then
-		          n = n + 1
-		        else
-		          check = true
-		        end
-		      else
-		        check = true
-		      end
-		    loop until check
-		    move = floor(rnd*n)
-		    make_play(Listbox1.Cell(move,0),Listbox1.Cell(move,1),letters)
-		    listbox2.AddRow str(player)+": "+Listbox1.Cell(move,0)+" "+Listbox1.Cell(move,1)+" "+Listbox1.Cell(move,2)+" "+Listbox1.Cell(move,3)
-		    return listbox1.cell(n-1,3)
+		  if candidates.Ubound < 0 then
+		    listbox2.addrow str(player)+": Pass"
+		    zeros = zeros + 1
+		    return letters
+		  else
+		    move = floor(rnd*candidates.ubound)
+		    listbox2.AddRow str(player)+": "+candidates(move).location+" "+candidates(move).word+" "+str(candidates(move).score)+" "+candidates(move).leave
+		    make_play(candidates(move).location,candidates(move).word,letters)
+		    return candidates(move).leave
 		  end
-		  listbox2.addrow str(player)+": Pass"
-		  zeros = zeros + 1
-		  return letters
 		  
 		End Function
 	#tag EndMethod
@@ -385,7 +333,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub make_play(word as string, location as string, rack as string)
+		Sub make_play(location as string, word as string, rack as string)
 		  dim i,x,y as integer
 		  
 		  word = word.ReplaceAll("(","")
@@ -699,11 +647,16 @@ End
 
 	#tag Method, Flags = &h0
 		Sub process(location as string, word as String, score as integer, leave as String)
-		  word = word.ReplaceAll(")(","")
-		  Listbox1.AddRow word
-		  listbox1.Cell(Listbox1.LastIndex,1) = location
-		  listbox1.Cell(Listbox1.LastIndex,2) = str(score)
-		  listbox1.Cell(Listbox1.LastIndex,3) = leave
+		  dim move as Move
+		  
+		  if candidates.Ubound < 0 then
+		    add_play(location, word, score, leave)
+		  elseif candidates(0).score = score then
+		    add_play(location, word, score, leave)
+		  elseif candidates(0).score < score then
+		    redim candidates(-1)
+		    add_play(location, word, score, leave)
+		  end
 		  
 		End Sub
 	#tag EndMethod
@@ -963,6 +916,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		candidates() As Move
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		rack1 As String
 	#tag EndProperty
 
@@ -999,6 +956,7 @@ End
 		  dim letters as string
 		  dim temp() as string
 		  dim i,leave as integer
+		  redim candidates(-1)
 		  
 		  if listbox2.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = "")) then
 		    listbox2.DeleteAllRows
@@ -1009,7 +967,6 @@ End
 		    zeros = 0
 		    toplay = 1
 		  end
-		  listbox1.DeleteAllRows
 		  if toplay = 1 then
 		    leave = len(rack1)+1
 		    for i = leave to racksize
@@ -1036,37 +993,6 @@ End
 		  toplay = 3 - toplay
 		  
 		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Listbox1
-	#tag Event
-		Function CompareRows(row1 as Integer, row2 as Integer, column as Integer, ByRef result as Integer) As Boolean
-		  dim sortstring1,sortstring2 as String
-		  
-		  Select Case column
-		  Case 0 'word
-		    sortstring1 = Me.Cell(row1, column).ReplaceAll("(","").replaceall(")","")+Me.Cell(row1, 1)+Format(9999-Val(Me.Cell(row1, 2)),"0000")
-		    sortstring2 = Me.Cell(row2, column).ReplaceAll("(","").replaceall(")","")+Me.Cell(row2, 1)+Format(9999-Val(Me.Cell(row2, 2)),"0000")
-		  Case 1 'location
-		    sortstring1 = Me.Cell(row1, column)+Format(9999-Val(Me.Cell(row1, 2)),"0000")+Me.Cell(row1, 0).ReplaceAll("(","").replaceall(")","")
-		    sortstring2 = Me.Cell(row2, column)+Format(9999-Val(Me.Cell(row2, 2)),"0000")+Me.Cell(row2, 0).ReplaceAll("(","").replaceall(")","")
-		  Case 2 'score
-		    sortstring1 = Format(9999-Val(Me.Cell(row1, column)),"0000")+Me.Cell(row1, 1)+Me.Cell(row1, 0).ReplaceAll("(","").replaceall(")","")
-		    sortstring2 = Format(9999-Val(Me.Cell(row2, column)),"0000")+Me.Cell(row2, 1)+Me.Cell(row2, 0).ReplaceAll("(","").replaceall(")","")
-		  Case 3 'leave
-		    sortstring1 = str(len(Me.Cell(row1, column)))+Me.Cell(row1, column)+Me.Cell(row1, 1)+Format(9999-Val(Me.Cell(row1, 2)),"0000")+Me.Cell(row1, 0).ReplaceAll("(","").replaceall(")","")
-		    sortstring2 = str(len(Me.Cell(row2, column)))+Me.Cell(row2, column)+Me.Cell(row2, 1)+Format(9999-Val(Me.Cell(row2, 2)),"0000")+Me.Cell(row2, 0).ReplaceAll("(","").replaceall(")","")
-		  End Select
-		  if sortstring1 > sortstring2 then
-		    result = 1
-		  elseif sortstring1 < sortstring2 then
-		    result = -1
-		  else
-		    result = 0
-		  end
-		  return true
-		  
-		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
@@ -1314,6 +1240,11 @@ End
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="zeros"
+		Group="Behavior"
+		Type="Integer"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="toplay"
 		Group="Behavior"
 		Type="Integer"
 	#tag EndViewProperty

@@ -90,7 +90,7 @@ Begin Window mainWindow
       Visible         =   True
       Width           =   80
    End
-   Begin Listbox Listbox2
+   Begin Listbox Listbox1
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
       Bold            =   False
@@ -214,12 +214,12 @@ End
 		    next
 		  end
 		  if candidates.Ubound < 0 then
-		    listbox2.addrow str(player)+": Pass"
+		    listbox1.addrow str(player)+": Pass"
 		    zeros = zeros + 1
 		    return letters
 		  else
 		    move = floor(rnd*candidates.ubound)
-		    listbox2.AddRow str(player)+": "+candidates(move).location+" "+candidates(move).word+" "+str(candidates(move).score)+" "+candidates(move).leave
+		    listbox1.AddRow str(player)+": "+candidates(move).location+" "+candidates(move).word+" "+str(candidates(move).score)+" "+candidates(move).leave
 		    make_play(candidates(move).location,candidates(move).word,letters)
 		    return candidates(move).leave
 		  end
@@ -361,44 +361,24 @@ End
 
 	#tag Method, Flags = &h0
 		Sub play_game()
-		  dim letters as string
-		  dim temp() as string
-		  dim i,leave as integer
-		  
-		  listbox2.DeleteAllRows
+		  listbox1.DeleteAllRows
 		  initbag
 		  resetboard
-		  rack1 = ""
-		  rack2 = ""
+		  rack1 = replenish("")
+		  rack2 = replenish("")
 		  zeros = 0
-		  toplay = 1
+		  toplay = 2
 		  do
-		    if toplay = 1 then
-		      leave = len(rack1)+1
-		      for i = leave to racksize
-		        if bag.Ubound > -1 then
-		          rack1 = rack1 + bag.Pop
-		        end
-		      next
-		      temp = split(rack1,"")
-		      temp.Sort
-		      rack1 = join(temp,"")
-		      rack1 = do_move(rack1,toplay)
-		    else
-		      leave = len(rack2)+1
-		      for i = leave to racksize
-		        if bag.Ubound > -1 then
-		          rack2 = rack2 + bag.Pop
-		        end
-		      next
-		      temp = split(rack2,"")
-		      temp.Sort
-		      rack2 = join(temp,"")
-		      rack2 = do_move(rack2,toplay)
-		    end
 		    redim candidates(-1)
 		    toplay = 3 - toplay
-		  loop until listbox2.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = ""))
+		    if toplay = 1 then
+		      rack1 = do_move(rack1,toplay)
+		      rack1 = replenish(rack1)
+		    else
+		      rack2 = do_move(rack2,toplay)
+		      rack2 = replenish(rack2)
+		    end
+		  loop until listbox1.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = ""))
 		  
 		End Sub
 	#tag EndMethod
@@ -703,6 +683,25 @@ End
 		  end
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function replenish(rack as String) As String
+		  dim i,leave as integer
+		  dim temp() as string
+		  
+		  leave = len(rack)+1
+		  for i = leave to racksize
+		    if bag.Ubound > -1 then
+		      rack = rack + bag.Pop
+		    end
+		  next
+		  temp = split(rack,"")
+		  temp.Sort
+		  rack = join(temp,"")
+		  return rack
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

@@ -63,7 +63,7 @@ Begin Window mainWindow
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
-      Caption         =   "Button"
+      Caption         =   "Off"
       Default         =   False
       Enabled         =   True
       Height          =   20
@@ -141,6 +141,49 @@ Begin Window mainWindow
       Width           =   700
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
+   End
+   Begin Timer Timer1
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Mode            =   0
+      Period          =   0
+      Scope           =   0
+      TabPanelIndex   =   0
+   End
+   Begin Label Label1
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   528
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "0"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
    End
 End
 #tag EndWindow
@@ -996,8 +1039,22 @@ End
 #tag Events PushButton1
 	#tag Event
 		Sub Action()
-		  play_game
+		  if me.Caption = "Off" then
+		    me.Caption = "On"
+		    Timer1.Mode = Timer.ModeMultiple
+		  else
+		    me.Caption = "Off"
+		    Timer1.Mode = Timer.ModeOff
+		  end
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Timer1
+	#tag Event
+		Sub Action()
+		  play_game
+		  label1.Text = str(val(label1.Text) + 1)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -41,6 +41,12 @@ Inherits Application
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub db_add_play(play as string, score as integer)
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		mgpDB As SQLiteDatabase

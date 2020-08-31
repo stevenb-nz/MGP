@@ -263,6 +263,7 @@ End
 		  else
 		    move = floor(rnd*candidates.ubound)
 		    listbox1.AddRow str(player)+": "+candidates(move).location+" "+candidates(move).word+" "+str(candidates(move).score)+" "+candidates(move).leave
+		    App.db_add_play(candidates(move).word, candidates(move).score)
 		    make_play(candidates(move).location,candidates(move).word,letters)
 		    return candidates(move).leave
 		  end
@@ -421,7 +422,7 @@ End
 		      rack2 = do_move(rack2,toplay)
 		      rack2 = replenish(rack2)
 		    end
-		  loop until listbox1.ListCount = 0 or zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = ""))
+		  loop until zeros = 3 or (bag.Ubound < 0 and (rack1 = "" or rack2 = ""))
 		  
 		End Sub
 	#tag EndMethod

@@ -44,10 +44,25 @@ Inherits Application
 	#tag Method, Flags = &h0
 		Sub db_add_play(play as string, score as integer)
 		  dim combo as string
+		  dim sql as string
+		  dim data as RecordSet
 		  
 		  combo = sortstring(play.ToText).Lowercase
 		  combo = combo.ReplaceAll("(","")
 		  combo = combo.ReplaceAll(")","")
+		  
+		  sql = "SELECT frequency,score from scores WHERE combo='"+combo+"'"
+		  data =mgpDB.SQLSelect(sql)
+		  
+		  if data.RecordCount = 0 then
+		    dim row as new DatabaseRecord
+		    row.Column("combo") = combo
+		    row.Column("frequency") = "1"
+		    row.Column("score") = str(score)
+		    mgpDB.InsertRecord("scores", row)
+		  else
+		    mgpDB.SQLExecute("UPDATE scores SET frequency="+str(val(data.IdxField(1).StringValue)+1)+",score="+str(val(data.IdxField(2).StringValue)+score)+" WHERE combo='"+combo+"'")
+		  end
 		  
 		End Sub
 	#tag EndMethod

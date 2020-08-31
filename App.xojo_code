@@ -43,8 +43,29 @@ Inherits Application
 
 	#tag Method, Flags = &h0
 		Sub db_add_play(play as string, score as integer)
+		  dim combo as string
+		  
+		  combo = sortstring(play.ToText).Lowercase
+		  combo = combo.ReplaceAll("(","")
+		  combo = combo.ReplaceAll(")","")
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function sortstring(word as text) As text
+		  dim sorted as text
+		  dim sort_array() as string
+		  
+		  for each l as text in word.Characters
+		    sort_array.Append l
+		  next
+		  sort_array.Sort
+		  sorted = join(sort_array,"").ToText
+		  
+		  return sorted
+		  
+		End Function
 	#tag EndMethod
 
 
@@ -69,11 +90,6 @@ Inherits Application
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="mgpDB"
-			Group="Behavior"
-			Type="Integer"
-		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

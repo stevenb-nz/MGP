@@ -174,7 +174,7 @@ Begin Window mainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "0"
-      TextAlign       =   0
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "System"
       TextSize        =   0.0

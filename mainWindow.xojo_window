@@ -1055,7 +1055,7 @@ End
 	#tag Event
 		Sub Action()
 		  play_game
-		  label1.Text = str(val(label1.Text) + 1)
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

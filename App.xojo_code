@@ -24,6 +24,13 @@ Inherits Application
 		      end if
 		      tables.close
 		    End If
+		    
+		    dim sql as string
+		    dim data as RecordSet
+		    
+		    sql = "SELECT sum(frequency) from scores"
+		    data =mgpDB.SQLSelect(sql)
+		    mainWindow.Label1.Text = format(val(data.IdxField(1).StringValue),"###,###,###,###")
 		  else
 		    MsgBox "Something went wrong creating a new database file."
 		  end if
@@ -63,6 +70,7 @@ Inherits Application
 		  else
 		    mgpDB.SQLExecute("UPDATE scores SET frequency="+str(val(data.IdxField(1).StringValue)+1)+",score="+str(val(data.IdxField(2).StringValue)+score)+" WHERE combo='"+combo+"'")
 		  end
+		  mainWindow.label1.Text = format(val(mainWindow.label1.Text.ReplaceAll(",","")) + 1,"###,###,###,###")
 		  
 		End Sub
 	#tag EndMethod

@@ -15,7 +15,7 @@ Inherits Application
 		  Dim tables As RecordSet
 		  
 		  mgpDB = new SQLiteDatabase
-		  mgpDB.DatabaseFile = SpecialFolder.Desktop.Child("MGP.sqlite")
+		  mgpDB.DatabaseFile = SpecialFolder.Desktop.Child("MGPtest.sqlite")
 		  if mgpDB.CreateDatabaseFile then
 		    tables = mgpDB.TableSchema
 		    If tables <> Nil Then

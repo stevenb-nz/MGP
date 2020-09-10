@@ -80,8 +80,7 @@ Protected Module Dagadag_module
 
 	#tag Method, Flags = &h0
 		Function dagadag_nextnode(node as uint32, letter as string) As UInt32
-		  'dagadag.Position = node*109+(asc(lowercase(letter))-96)*4
-		  'return dagadag.ReadUInt32
+		  return dagadag.UInt32Value(node*109+(asc(lowercase(letter))-96)*4)
 		End Function
 	#tag EndMethod
 

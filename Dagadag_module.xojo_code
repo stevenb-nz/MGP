@@ -68,12 +68,11 @@ Protected Module Dagadag_module
 
 	#tag Method, Flags = &h0
 		Function dagadag_endword(node as uint32) As boolean
-		  'dagadag.Position = node*109+108
-		  'if dagadag.read(1) = "0" then
-		  'return false
-		  'else
-		  'return true
-		  'end if
+		  if dagadag.StringValue(node*109+108,1) = "0" then
+		    return false
+		  else
+		    return true
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -81,6 +80,7 @@ Protected Module Dagadag_module
 	#tag Method, Flags = &h0
 		Function dagadag_nextnode(node as uint32, letter as string) As UInt32
 		  return dagadag.UInt32Value(node*109+(asc(lowercase(letter))-96)*4)
+		  
 		End Function
 	#tag EndMethod
 
@@ -88,6 +88,7 @@ Protected Module Dagadag_module
 		Sub init_dagadag()
 		  dim dagadagbs as BinaryStream = SpecialFolder.Preferences.child("dagadagfile").openasbinaryFile(false)
 		  dagadag = dagadagbs.Read(dagadagbs.Length)
+		  dagadag.LittleEndian = false
 		  
 		End Sub
 	#tag EndMethod

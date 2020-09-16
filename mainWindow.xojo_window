@@ -143,6 +143,7 @@ Begin Window mainWindow
       _ScrollWidth    =   -1
    End
    Begin Timer Timer1
+      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Mode            =   0
@@ -257,7 +258,7 @@ End
 		    next
 		  end
 		  if candidates.Ubound < 0 then
-		    listbox1.addrow str(player)+": Pass"
+		    listbox1.addrow str(player)+": Pass"+" - "+if(player=1,rack1,rack2)
 		    zeros = zeros + 1
 		    return letters
 		  else

@@ -143,7 +143,6 @@ Begin Window mainWindow
       _ScrollWidth    =   -1
    End
    Begin Timer Timer1
-      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Mode            =   0
@@ -266,6 +265,7 @@ End
 		    listbox1.AddRow str(player)+": "+candidates(move).location+" "+candidates(move).word+" "+str(candidates(move).score)+" "+candidates(move).leave
 		    App.db_add_play(candidates(move).word, candidates(move).score)
 		    make_play(candidates(move).location,candidates(move).word,letters)
+		    zeros = 0
 		    return candidates(move).leave
 		  end
 		  

@@ -940,30 +940,24 @@ End
 
 	#tag Method, Flags = &h0
 		Function tile_value(tile as String) As integer
-		  dim asc_value,return_value as integer
-		  
-		  asc_value = asc(tile)
-		  
-		  select case asc_value
-		  case 65, 69, 73, 76, 78, 79, 82, 83, 84, 85
-		    return_value = 1
-		  case 68, 71
-		    return_value = 2
-		  case 66, 67, 77, 80
-		    return_value = 3
-		  case 70, 72, 86, 87, 89
-		    return_value = 4
-		  case 75
-		    return_value = 5
-		  case 74, 88
-		    return_value = 8
-		  case 81, 90
-		    return_value = 10
+		  select case tile
+		  case "A", "E", "I", "L", "N", "O", "R", "S", "T", "U"
+		    return 1
+		  case "D", "G"
+		    return 2
+		  case "B", "C", "M", "P"
+		    return 3
+		  case "F", "H", "V", "W", "Y"
+		    return 4
+		  case "K"
+		    return 5
+		  case "J", "X"
+		    return 8
+		  case "Q", "Z"
+		    return 10
 		  else
-		    return_value = 0
+		    return 0
 		  end
-		  
-		  return return_value
 		  
 		End Function
 	#tag EndMethod

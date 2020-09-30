@@ -540,16 +540,15 @@ End
 		Sub prefix(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
 		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
 		    if if(horizontal,board(x-offset,y).face,board(x,y-offset).face) ="" then
-		      prefix_ff(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum)
+		      prefix_f(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum,true)
 		    else
-		      prefix_ft(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum)
+		      prefix_f(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum,false)
 		    end
 		  else
 		    if if(horizontal,board(x-offset,y).face,board(x,y-offset).face) ="" then
-		      
-		      prefix_tf(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum)
+		      prefix_t(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum,true)
 		    else
-		      prefix_tt(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum)
+		      prefix_t(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum,false)
 		    end
 		  end
 		  
@@ -557,7 +556,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub prefix_f(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		Sub prefix_f(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer, cfw as boolean)
 		  dim tile as string
 		  dim i,j,leftmost,nextnode as integer
 		  dim rack as new Rack
@@ -572,9 +571,9 @@ End
 		              nextnode = dagadag_nextnode(node,chr(j))
 		              if nextnode <> 0 then
 		                if horizontal then
-		                  prefix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  prefix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum,cfw)
 		                else
-		                  prefix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  prefix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum,cfw)
 		                end
 		              end
 		            next
@@ -583,9 +582,9 @@ End
 		            if nextnode <> 0 then
 		              tile = rack.tiles(i).face
 		              if horizontal then
-		                prefix_f(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                prefix_f(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum,cfw)
 		              else
-		                prefix_f(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                prefix_f(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum,cfw)
 		              end
 		            end
 		          end
@@ -611,102 +610,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub prefix_ff(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  dim tile as string
-		  dim i,j,leftmost,nextnode as integer
-		  dim rack as new Rack
-		  
-		  rack.import letters
-		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
-		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
-		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
-		        for i = 0 to UBound(rack.tiles)
-		          if rack.tiles(i).face = "?" then
-		            for j = 97 to 122
-		              nextnode = dagadag_nextnode(node,chr(j))
-		              if nextnode <> 0 then
-		                if horizontal then
-		                  prefix_ff(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
-		                else
-		                  prefix_ff(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
-		                end
-		              end
-		            next
-		          else
-		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
-		            if nextnode <> 0 then
-		              tile = rack.tiles(i).face
-		              if horizontal then
-		                prefix_ff(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
-		              else
-		                prefix_ff(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
-		              end
-		            end
-		          end
-		        next
-		      end
-		    end
-		  end
-		  check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
-		  node = dagadag_nextnode(node,chr(96))
-		  if node <> 0 then
-		    leftmost = offset
-		    offset = 1
-		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
-		  end
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub prefix_ft(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  dim tile as string
-		  dim i,j,leftmost,nextnode as integer
-		  dim rack as new Rack
-		  
-		  rack.import letters
-		  if if(horizontal,board(x+offset,y).face,board(x,y+offset).face) ="" then
-		    if not if(horizontal,board(x+offset,y).anchor,board(x,y+offset).anchor) then
-		      if not if(horizontal,board(x+offset,y).border,board(x,y+offset).border) then
-		        for i = 0 to UBound(rack.tiles)
-		          if rack.tiles(i).face = "?" then
-		            for j = 97 to 122
-		              nextnode = dagadag_nextnode(node,chr(j))
-		              if nextnode <> 0 then
-		                if horizontal then
-		                  prefix_ft(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
-		                else
-		                  prefix_ft(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
-		                end
-		              end
-		            next
-		          else
-		            nextnode = dagadag_nextnode(node,rack.tiles(i).face)
-		            if nextnode <> 0 then
-		              tile = rack.tiles(i).face
-		              if horizontal then
-		                prefix_ft(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
-		              else
-		                prefix_ft(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
-		              end
-		            end
-		          end
-		        next
-		      end
-		    end
-		  end
-		  node = dagadag_nextnode(node,chr(96))
-		  if node <> 0 then
-		    leftmost = offset
-		    offset = 1
-		    suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
-		  end
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub prefix_t(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
+		Sub prefix_t(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer, cfw as boolean)
 		  dim tile as string
 		  dim leftmost,nextnode as integer
 		  
@@ -733,61 +637,6 @@ End
 		      else
 		        suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		      end
-		    end
-		  end
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub prefix_tf(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  dim tile as string
-		  dim leftmost,nextnode as integer
-		  
-		  do
-		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
-		    nextnode = dagadag_nextnode(node,tile)
-		    if nextnode <> 0 then
-		      node = nextnode
-		      word = "("+tile+")" + word
-		      pvalue = pvalue + tile_value(tile)
-		      offset = offset - 1
-		    end
-		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
-		  if nextnode <> 0 then
-		    check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
-		    node = dagadag_nextnode(node,chr(96))
-		    if node <> 0 then
-		      leftmost = offset
-		      offset = 1
-		      suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
-		    end
-		  end
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub prefix_tt(letters as string, letters_played as integer, word as string, node as integer, x as integer, y as integer, horizontal as boolean, offset as integer, pvalue as integer, pmult as integer, psum as integer)
-		  dim tile as string
-		  dim leftmost,nextnode as integer
-		  
-		  do
-		    tile =  if(horizontal,board(x+offset,y).face,board(x,y+offset).face)
-		    nextnode = dagadag_nextnode(node,tile)
-		    if nextnode <> 0 then
-		      node = nextnode
-		      word = "("+tile+")" + word
-		      pvalue = pvalue + tile_value(tile)
-		      offset = offset - 1
-		    end
-		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
-		  if nextnode <> 0 then
-		    node = dagadag_nextnode(node,chr(96))
-		    if node <> 0 then
-		      leftmost = offset
-		      offset = 1
-		      suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
 		    end
 		  end
 		  

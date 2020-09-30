@@ -879,6 +879,10 @@ End
 
 	#tag Method, Flags = &h0
 		Function tile_value(tile as String) As integer
+		  if asc(tile) > 90 then
+		    return 0
+		  end
+		  
 		  select case tile
 		  case "A", "E", "I", "L", "N", "O", "R", "S", "T", "U"
 		    return 1

@@ -546,6 +546,7 @@ End
 		    end
 		  else
 		    if if(horizontal,board(x-offset,y).face,board(x,y-offset).face) ="" then
+		      
 		      prefix_tf(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum)
 		    else
 		      prefix_tt(letters,letters_played,word,node,x,y,horizontal,offset,pvalue,pmult,psum)
@@ -571,9 +572,9 @@ End
 		              nextnode = dagadag_nextnode(node,chr(j))
 		              if nextnode <> 0 then
 		                if horizontal then
-		                  prefix_ff(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
+		                  prefix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x+offset,y).wordmult,psum)
 		                else
-		                  prefix_ff(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
+		                  prefix_f(letters.Replace(rack.tiles(i).face,""),letters_played+1,chr(j)+word,nextnode,x,y,horizontal,offset-1,pvalue,pmult*board(x,y+offset).wordmult,psum)
 		                end
 		              end
 		            next
@@ -582,9 +583,9 @@ End
 		            if nextnode <> 0 then
 		              tile = rack.tiles(i).face
 		              if horizontal then
-		                prefix_ff(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
+		                prefix_f(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x+offset,y).lettermult,pmult*board(x+offset,y).wordmult,psum)
 		              else
-		                prefix_ff(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
+		                prefix_f(letters.Replace(tile,""),letters_played+1,tile+word,nextnode,x,y,horizontal,offset-1,pvalue+tile_value(tile)*board(x,y+offset).lettermult,pmult*board(x,y+offset).wordmult,psum)
 		              end
 		            end
 		          end
@@ -592,12 +593,18 @@ End
 		      end
 		    end
 		  end
-		  check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
+		  if cfw then
+		    check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
+		  end
 		  node = dagadag_nextnode(node,chr(96))
 		  if node <> 0 then
 		    leftmost = offset
 		    offset = 1
-		    suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		    if cfw then
+		      suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		    else
+		      suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		    end
 		  end
 		  
 		End Sub
@@ -714,12 +721,18 @@ End
 		    end
 		  loop until nextnode = 0 or if(horizontal,board(x+offset,y).face,board(x,y+offset).face) = ""
 		  if nextnode <> 0 then
-		    check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
+		    if cfw then
+		      check_for_word(word,letters,node,letters_played,x,y,offset,horizontal,psum,pvalue,pmult)
+		    end
 		    node = dagadag_nextnode(node,chr(96))
 		    if node <> 0 then
 		      leftmost = offset
 		      offset = 1
-		      suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		      if cfw then
+		        suffix_f(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		      else
+		        suffix_t(letters,letters_played,word,node,x,y,horizontal,offset,leftmost,pvalue,pmult,psum)
+		      end
 		    end
 		  end
 		  

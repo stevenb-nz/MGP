@@ -54,7 +54,7 @@ Inherits Application
 		  dim sql as string
 		  dim data as RecordSet
 		  
-		  combo = sortstring(play.ToText).Lowercase
+		  combo = sortstring(play.ToText).Uppercase
 		  combo = combo.ReplaceAll("(","")
 		  combo = combo.ReplaceAll(")","")
 		  
